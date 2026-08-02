@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#061b31" />
+    <meta
+      name="description"
+      content="IS Group Outlet — electrodomésticos y tecnología de primeras marcas con descuentos especiales."
+    />
+    <title>IS Group Outlet — Tecnología a mejor precio</title>
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="announcement">
+      <div class="shell announcement-inner">
+        <span data-i18n="announcement">Unidades limitadas · Recogida en Novelda · Envíos a España y UE</span>
+        <a href="#contact" data-i18n="announcementLink">¿Tienes una pregunta?</a>
+      </div>
+    </div>
+
+    <header class="site-header" id="top">
+      <div class="shell header-inner">
+        <a class="brand" href="#top" aria-label="IS Group Outlet">
+          <span>IS GROUP OUTLET</span><i aria-hidden="true"></i>
+        </a>
+
+        <nav class="desktop-nav" aria-label="Navegación principal">
+          <a href="#catalog" data-i18n="navCatalog">Catálogo</a>
+          <a href="#how" data-i18n="navHow">Cómo comprar</a>
+          <a href="#delivery" data-i18n="navDelivery">Entrega</a>
+          <a href="#contact" data-i18n="navContact">Contacto</a>
+        </nav>
+
+        <div class="header-actions">
+          <div class="language-switcher" aria-label="Idioma">
+            <button type="button" data-lang="es" class="active">ES</button>
+            <button type="button" data-lang="en">EN</button>
+            <button type="button" data-lang="ru">RU</button>
+          </div>
+          <button class="cart-trigger" id="cartTrigger" type="button" aria-label="Abrir carrito">
+            <span aria-hidden="true">▱</span>
+            <strong id="cartCount">0</strong>
+          </button>
+          <button class="menu-trigger" id="menuTrigger" type="button" aria-label="Abrir menú" aria-expanded="false">
+            <span></span><span></span>
+          </button>
+        </div>
+      </div>
+
+      <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil">
+        <a href="#catalog" data-i18n="navCatalog">Catálogo</a>
+        <a href="#how" data-i18n="navHow">Cómo comprar</a>
+        <a href="#delivery" data-i18n="navDelivery">Entrega</a>
+        <a href="#contact" data-i18n="navContact">Contacto</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="shell hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow" data-i18n="heroEyebrow">OUTLET DE TECNOLOGÍA Y HOGAR</p>
+            <h1 data-i18n="heroTitle">Grandes marcas.<br /><em>Precios pequeños.</em></h1>
+            <p class="hero-description" data-i18n="heroDescription">
+              Productos nuevos, de exposición y últimas unidades con descuentos de hasta el 60%.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-yellow" href="#catalog" data-i18n="heroCta">Ver ofertas</a>
+              <a class="button button-outline" href="#delivery" data-i18n="heroSecondary">Entrega y recogida</a>
+            </div>
+            <div class="hero-note">
+              <span aria-hidden="true">●</span>
+              <p><strong data-i18n="heroStock">Stock real</strong><small data-i18n="heroStockNote">Pocas unidades de cada producto</small></p>
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-label="Selección de productos del outlet">
+            <div class="hero-glow"></div>
+            <article class="hero-product hero-product-main">
+              <span class="hero-discount">−50%</span>
+              <span class="hero-emoji" aria-hidden="true">📺</span>
+              <div><small>SAMSUNG</small><strong>QLED 55”</strong></div>
+            </article>
+            <article class="hero-product hero-product-coffee">
+              <span class="hero-emoji" aria-hidden="true">☕</span>
+              <div><small>DE’LONGHI</small><strong>Magnifica</strong></div>
+            </article>
+            <article class="hero-product hero-product-clean">
+              <span class="hero-emoji" aria-hidden="true">🧹</span>
+              <div><small>BOSCH</small><strong>Unlimited 7</strong></div>
+            </article>
+            <p class="hero-price"><small data-i18n="from">desde</small><strong>74,50 €</strong></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="benefits" aria-label="Ventajas">
+        <div class="shell benefits-grid">
+          <article><span>01</span><div><strong data-i18n="benefit1">Precios outlet</strong><small data-i18n="benefit1Text">Hasta −60% sobre PVP</small></div></article>
+          <article><span>02</span><div><strong data-i18n="benefit2">Compra segura</strong><small data-i18n="benefit2Text">Estado revisado y garantía</small></div></article>
+          <article><span>03</span><div><strong data-i18n="benefit3">Entrega flexible</strong><small data-i18n="benefit3Text">Recogida, España y UE</small></div></article>
+        </div>
+      </section>
+
+      <section class="catalog section" id="catalog">
+        <div class="shell">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow orange" data-i18n="catalogEyebrow">CATÁLOGO ACTUAL</p>
+              <h2 data-i18n="catalogTitle">Encuentra tu próxima oferta</h2>
+            </div>
+            <p data-i18n="catalogIntro">El stock cambia rápido. Reserva el producto para confirmar disponibilidad.</p>
+          </div>
+
+          <div class="filter-panel">
+            <label class="search-field">
+              <span aria-hidden="true">⌕</span>
+              <input id="searchInput" type="search" placeholder="Buscar producto o marca" data-i18n-placeholder="searchPlaceholder" />
+            </label>
+            <label>
+              <span data-i18n="categoryLabel">Categoría</span>
+              <select id="categoryFilter"></select>
+            </label>
+            <label>
+              <span data-i18n="brandLabel">Marca</span>
+              <select id="brandFilter"></select>
+            </label>
+            <label>
+              <span data-i18n="sortLabel">Ordenar</span>
+              <select id="sortFilter"></select>
+            </label>
+            <label class="price-filter">
+              <span><b data-i18n="priceLabel">Precio máximo</b><output id="priceOutput">1.000 €</output></span>
+              <input id="priceFilter" type="range" min="50" max="1000" step="25" value="1000" />
+            </label>
+          </div>
+
+          <div class="catalog-status">
+            <p><strong id="resultCount">0</strong> <span data-i18n="productsFound">productos</span></p>
+            <button id="resetFilters" type="button" data-i18n="resetFilters">Limpiar filtros</button>
+          </div>
+
+          <div class="product-grid" id="productGrid"></div>
+          <div class="empty-state" id="emptyState" hidden>
+            <span aria-hidden="true">⌕</span>
+            <h3 data-i18n="emptyTitle">No encontramos productos</h3>
+            <p data-i18n="emptyText">Prueba a cambiar los filtros o el precio máximo.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="how section" id="how">
+        <div class="shell">
+          <div class="section-heading light">
+            <div><p class="eyebrow yellow" data-i18n="howEyebrow">SENCILLO Y TRANSPARENTE</p><h2 data-i18n="howTitle">Cómo comprar</h2></div>
+            <p data-i18n="howIntro">Tres pasos para reservar una oferta antes de que se agote.</p>
+          </div>
+          <div class="steps-grid">
+            <article><b>01</b><span aria-hidden="true">⌕</span><h3 data-i18n="step1">Elige el producto</h3><p data-i18n="step1Text">Compara precio, estado, características y unidades disponibles.</p></article>
+            <article><b>02</b><span aria-hidden="true">＋</span><h3 data-i18n="step2">Solicita la reserva</h3><p data-i18n="step2Text">Añádelo a la cesta y deja tus datos. Confirmaremos el stock.</p></article>
+            <article><b>03</b><span aria-hidden="true">✓</span><h3 data-i18n="step3">Recibe la confirmación</h3><p data-i18n="step3Text">Acordamos el pago, la recogida o el tipo de entrega más conveniente.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="delivery section" id="delivery">
+        <div class="shell delivery-grid">
+          <div class="delivery-copy">
+            <p class="eyebrow orange" data-i18n="deliveryEyebrow">TÚ ELIGES CÓMO RECIBIRLO</p>
+            <h2 data-i18n="deliveryTitle">Desde Novelda hasta tu puerta</h2>
+            <p data-i18n="deliveryText">Calculamos cada envío según el tamaño, el peso y la dirección para ofrecerte la opción más conveniente.</p>
+            <a class="text-link" href="#contact"><span data-i18n="askDelivery">Consultar una entrega</span> →</a>
+          </div>
+          <div class="delivery-options">
+            <article><span>01</span><div><h3 data-i18n="delivery1">Recogida en el outlet</h3><p data-i18n="delivery1Text">Reserva y recoge tu compra en Novelda.</p></div></article>
+            <article><span>02</span><div><h3 data-i18n="delivery2">Envío por España</h3><p data-i18n="delivery2Text">Paquetería para productos pequeños y medianos.</p></div></article>
+            <article><span>03</span><div><h3 data-i18n="delivery3">Entrega local de gran tamaño</h3><p data-i18n="delivery3Text">Electrodomésticos y productos voluminosos.</p></div></article>
+            <article><span>04</span><div><h3 data-i18n="delivery4">Envío a la Unión Europea</h3><p data-i18n="delivery4Text">Presupuesto individual antes de confirmar.</p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact section" id="contact">
+        <div class="shell contact-card">
+          <div>
+            <p class="eyebrow yellow" data-i18n="contactEyebrow">¿NECESITAS AYUDA?</p>
+            <h2 data-i18n="contactTitle">Te ayudamos a elegir</h2>
+            <p data-i18n="contactText">Escríbenos para comprobar stock, estado del producto y opciones de entrega.</p>
+          </div>
+          <div class="contact-actions">
+            <a class="button button-yellow" href="https://www.instagram.com/isgroup.outlet/" target="_blank" rel="noreferrer">Instagram</a>
+            <a class="button button-outline" href="mailto:info@isgroupoutlet.es" data-i18n="emailUs">Enviar email</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="shell footer-grid">
+        <div><a class="brand footer-brand" href="#top"><span>IS GROUP OUTLET</span><i></i></a><p data-i18n="footerText">Tecnología y hogar de primeras marcas a precio outlet.</p></div>
+        <div><strong data-i18n="footerCatalog">Catálogo</strong><a href="#catalog" data-i18n="navCatalog">Catálogo</a><a href="#delivery" data-i18n="navDelivery">Entrega</a></div>
+        <div><strong data-i18n="footerHelp">Ayuda</strong><a href="#how" data-i18n="navHow">Cómo comprar</a><a href="#contact" data-i18n="navContact">Contacto</a></div>
+        <div><strong data-i18n="footerFollow">Síguenos</strong><a href="https://www.instagram.com/isgroup.outlet/" target="_blank" rel="noreferrer">Instagram</a><a href="https://es.wallapop.com/user/-479838333" target="_blank" rel="noreferrer">Wallapop</a></div>
+      </div>
+      <div class="shell footer-bottom"><span>© <span id="year"></span> IS Group Outlet</span><span data-i18n="demoNotice">Versión de presentación. Los productos y precios son ejemplos.</span></div>
+    </footer>
+
+    <div class="overlay" id="overlay"></div>
+    <aside class="cart-drawer" id="cartDrawer" aria-hidden="true" aria-labelledby="cartTitle">
+      <div class="cart-header"><div><p class="eyebrow yellow" data-i18n="yourCart">TU CESTA</p><h2 id="cartTitle"><span id="cartTitleCount">0</span> <span data-i18n="cartProducts">productos</span></h2></div><button id="cartClose" type="button" aria-label="Cerrar">×</button></div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-empty" id="cartEmpty"><span>▱</span><h3 data-i18n="cartEmptyTitle">Tu cesta está vacía</h3><p data-i18n="cartEmptyText">Añade una oferta para solicitar una reserva.</p></div>
+      <div class="cart-footer" id="cartFooter">
+        <div class="cart-total"><span data-i18n="total">Total</span><strong id="cartTotal">0 €</strong></div>
+        <p data-i18n="deliveryCalculated">La entrega se calcula según el producto y la dirección.</p>
+        <button class="button button-yellow full" id="checkoutButton" type="button" data-i18n="reserveButton">Solicitar reserva</button>
+      </div>
+    </aside>
+
+    <dialog class="product-modal" id="productModal">
+      <button class="modal-close" id="productModalClose" type="button" aria-label="Cerrar">×</button>
+      <div id="productModalContent"></div>
+    </dialog>
+
+    <dialog class="checkout-modal" id="checkoutModal">
+      <button class="modal-close" id="checkoutClose" type="button" aria-label="Cerrar">×</button>
+      <div class="checkout-content">
+        <p class="eyebrow orange" data-i18n="reservationEyebrow">SOLICITUD DE RESERVA</p>
+        <h2 data-i18n="reservationTitle">Tus datos</h2>
+        <p data-i18n="reservationText">En la versión final el equipo recibirá la solicitud y confirmará disponibilidad, pago y entrega.</p>
+        <form id="checkoutForm">
+          <label><span data-i18n="nameLabel">Nombre</span><input name="name" required autocomplete="name" /></label>
+          <label><span data-i18n="phoneLabel">Teléfono</span><input name="phone" required autocomplete="tel" /></label>
+          <label><span data-i18n="deliveryMethod">Forma de entrega</span><select name="delivery" required id="deliverySelect"></select></label>
+          <label><span data-i18n="commentLabel">Comentario</span><textarea name="comment" rows="3"></textarea></label>
+          <p class="demo-warning" data-i18n="demoWarning">Demostración: no se envían datos y no se realiza ningún cobro.</p>
+          <button class="button button-yellow full" type="submit" data-i18n="sendRequest">Enviar solicitud de prueba</button>
+        </form>
+      </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./script.js"></script>
+  </body>
+</html>
