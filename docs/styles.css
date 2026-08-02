@@ -50,6 +50,9 @@ img { display: block; max-width: 100%; }
 .language-switcher { display: flex; gap: 3px; padding: 3px; border: 1px solid rgba(255,255,255,.2); border-radius: 7px; }
 .language-switcher button { padding: 5px 7px; color: #aec0d0; background: transparent; border: 0; border-radius: 4px; font-size: 10px; font-weight: 800; cursor: pointer; }
 .language-switcher button.active { color: var(--navy); background: var(--yellow); }
+.admin-demo-link { min-height: 42px; display: inline-flex; align-items: center; gap: 7px; padding: 0 12px; color: #c8d5e0; border: 1px solid rgba(255,255,255,.25); border-radius: 8px; font-size: 10px; font-weight: 800; white-space: nowrap; transition: color .2s ease, border-color .2s ease; }
+.admin-demo-link:hover { color: var(--yellow); border-color: var(--yellow); }
+.admin-demo-link span { font-size: 15px; }
 .cart-trigger, .menu-trigger { position: relative; width: 42px; height: 42px; display: grid; place-items: center; color: var(--white); background: transparent; border: 1px solid rgba(255,255,255,.25); border-radius: 8px; cursor: pointer; }
 .cart-trigger span { font-size: 22px; transform: rotate(180deg); }
 .cart-trigger strong { position: absolute; top: -7px; right: -7px; min-width: 21px; height: 21px; padding: 0 5px; display: grid; place-items: center; color: var(--navy); background: var(--yellow); border: 2px solid var(--navy); border-radius: 20px; font-size: 10px; }
@@ -259,6 +262,8 @@ dialog::backdrop { background: rgba(3,19,34,.72); backdrop-filter: blur(4px); }
   .brand { font-size: 15px; gap: 7px; }
   .brand i { width: 28px; height: 10px; }
   .language-switcher { display: none; }
+  .admin-demo-link { width: 42px; padding: 0; justify-content: center; }
+  .admin-demo-link b { display: none; }
   .header-actions { gap: 7px; }
   .hero-grid { width: 100%; padding: 55px 14px 38px; overflow: hidden; }
   .hero-copy { width: 100%; }

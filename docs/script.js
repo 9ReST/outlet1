@@ -1,4 +1,4 @@
-const products = [
+const defaultProducts = [
   {
     id: 'samsung-qled-55', brand: 'Samsung', category: 'tv', price: 449.5, oldPrice: 899, stock: 2, emoji: '📺',
     image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=900&q=82',
@@ -43,9 +43,14 @@ const products = [
   }
 ];
 
+const savedProducts = JSON.parse(localStorage.getItem('isgroup-demo-products') || 'null');
+let products = Array.isArray(savedProducts)
+  ? savedProducts
+  : defaultProducts.map((product) => ({ ...product, status: product.id === 'philips-lattego' ? 'draft' : 'published' }));
+
 const translations = {
   es: {
-    announcement: 'Unidades limitadas · Recogida en Novelda · Envíos a España y UE', announcementLink: '¿Tienes una pregunta?', navCatalog: 'Catálogo', navHow: 'Cómo comprar', navDelivery: 'Entrega', navContact: 'Contacto',
+    announcement: 'Unidades limitadas · Recogida en Novelda · Envíos a España y UE', announcementLink: '¿Tienes una pregunta?', navCatalog: 'Catálogo', navHow: 'Cómo comprar', navDelivery: 'Entrega', navContact: 'Contacto', adminDemo: 'Panel demo',
     heroEyebrow: 'OUTLET DE TECNOLOGÍA Y HOGAR', heroTitle: 'Grandes marcas.<br><em>Precios pequeños.</em>', heroDescription: 'Productos nuevos, de exposición y últimas unidades con descuentos de hasta el 60%.', heroCta: 'Ver ofertas', heroSecondary: 'Entrega y recogida', heroStock: 'Stock real', heroStockNote: 'Pocas unidades de cada producto', from: 'desde',
     benefit1: 'Precios outlet', benefit1Text: 'Hasta −60% sobre PVP', benefit2: 'Compra segura', benefit2Text: 'Estado revisado y garantía', benefit3: 'Entrega flexible', benefit3Text: 'Recogida, España y UE',
     catalogEyebrow: 'CATÁLOGO ACTUAL', catalogTitle: 'Encuentra tu próxima oferta', catalogIntro: 'El stock cambia rápido. Reserva el producto para confirmar disponibilidad.', searchPlaceholder: 'Buscar producto o marca', categoryLabel: 'Categoría', brandLabel: 'Marca', sortLabel: 'Ordenar', priceLabel: 'Precio máximo', productsFound: 'productos', resetFilters: 'Limpiar filtros',
@@ -59,7 +64,7 @@ const translations = {
     condition: 'Estado', stock: 'Disponibles', category: 'Categoría', warranty: 'Garantía', warrantyValue: 'A confirmar según producto'
   },
   en: {
-    announcement: 'Limited units · Pickup in Novelda · Delivery across Spain and EU', announcementLink: 'Have a question?', navCatalog: 'Catalogue', navHow: 'How to buy', navDelivery: 'Delivery', navContact: 'Contact',
+    announcement: 'Limited units · Pickup in Novelda · Delivery across Spain and EU', announcementLink: 'Have a question?', navCatalog: 'Catalogue', navHow: 'How to buy', navDelivery: 'Delivery', navContact: 'Contact', adminDemo: 'Admin demo',
     heroEyebrow: 'TECH & HOME OUTLET', heroTitle: 'Big brands.<br><em>Smaller prices.</em>', heroDescription: 'New, display and last-unit products with discounts of up to 60%.', heroCta: 'See offers', heroSecondary: 'Delivery & pickup', heroStock: 'Live stock', heroStockNote: 'Only a few units per product', from: 'from',
     benefit1: 'Outlet prices', benefit1Text: 'Up to 60% off RRP', benefit2: 'Safe purchase', benefit2Text: 'Inspected condition and warranty', benefit3: 'Flexible delivery', benefit3Text: 'Pickup, Spain and EU',
     catalogEyebrow: 'CURRENT CATALOGUE', catalogTitle: 'Find your next deal', catalogIntro: 'Stock changes quickly. Reserve a product to confirm availability.', searchPlaceholder: 'Search product or brand', categoryLabel: 'Category', brandLabel: 'Brand', sortLabel: 'Sort', priceLabel: 'Maximum price', productsFound: 'products', resetFilters: 'Clear filters',
@@ -73,7 +78,7 @@ const translations = {
     condition: 'Condition', stock: 'Available', category: 'Category', warranty: 'Warranty', warrantyValue: 'To be confirmed by product'
   },
   ru: {
-    announcement: 'Ограниченный остаток · Самовывоз в Новельде · Доставка по Испании и ЕС', announcementLink: 'Есть вопрос?', navCatalog: 'Каталог', navHow: 'Как купить', navDelivery: 'Доставка', navContact: 'Контакты',
+    announcement: 'Ограниченный остаток · Самовывоз в Новельде · Доставка по Испании и ЕС', announcementLink: 'Есть вопрос?', navCatalog: 'Каталог', navHow: 'Как купить', navDelivery: 'Доставка', navContact: 'Контакты', adminDemo: 'Демо-панель',
     heroEyebrow: 'АУТЛЕТ ТЕХНИКИ И ТОВАРОВ ДЛЯ ДОМА', heroTitle: 'Известные бренды.<br><em>Низкие цены.</em>', heroDescription: 'Новые, витринные товары и последние единицы со скидками до 60%.', heroCta: 'Смотреть предложения', heroSecondary: 'Доставка и самовывоз', heroStock: 'Реальный остаток', heroStockNote: 'Несколько единиц каждого товара', from: 'от',
     benefit1: 'Аутлет-цены', benefit1Text: 'Скидки до 60% от РРЦ', benefit2: 'Безопасная покупка', benefit2Text: 'Проверка состояния и гарантия', benefit3: 'Удобная доставка', benefit3Text: 'Самовывоз, Испания и ЕС',
     catalogEyebrow: 'АКТУАЛЬНЫЙ КАТАЛОГ', catalogTitle: 'Найдите выгодное предложение', catalogIntro: 'Остатки быстро меняются. Оформите резерв, чтобы подтвердить наличие.', searchPlaceholder: 'Название товара или бренд', categoryLabel: 'Категория', brandLabel: 'Бренд', sortLabel: 'Сортировка', priceLabel: 'Максимальная цена', productsFound: 'товаров', resetFilters: 'Сбросить фильтры',
@@ -132,7 +137,7 @@ function filteredProducts() {
   const sort = $('#sortFilter').value;
   const list = products.filter((product) => {
     const haystack = `${product.title[state.lang]} ${product.brand} ${categoryName(product.category)}`.toLowerCase();
-    return (!query || haystack.includes(query)) && (category === 'all' || product.category === category) && (brand === 'all' || product.brand === brand) && product.price <= maxPrice;
+    return (product.status || 'published') === 'published' && (!query || haystack.includes(query)) && (category === 'all' || product.category === category) && (brand === 'all' || product.brand === brand) && product.price <= maxPrice;
   });
   if (sort === 'priceAsc') list.sort((a, b) => a.price - b.price);
   if (sort === 'priceDesc') list.sort((a, b) => b.price - a.price);

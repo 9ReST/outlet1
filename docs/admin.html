@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#061b31" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>IS Group Outlet — демонстрационная админ-панель</title>
+    <link rel="stylesheet" href="./admin.css" />
+  </head>
+  <body>
+    <section class="login-screen" id="adminLogin">
+      <div class="login-brand brand"><span>IS GROUP OUTLET</span><i></i></div>
+      <div class="login-layout">
+        <div class="login-copy">
+          <p class="kicker">ПРЕЗЕНТАЦИОННАЯ ВЕРСИЯ</p>
+          <h1>Управление магазином<br /><em>в одном месте.</em></h1>
+          <p>Покажите, как владелец управляет товарами, заказами, остатками и сотрудниками.</p>
+          <ul>
+            <li><span>✓</span> Добавление товара сразу на витрину</li>
+            <li><span>✓</span> Контроль публикации и остатков</li>
+            <li><span>✓</span> Защищённые роли в будущей версии</li>
+          </ul>
+        </div>
+        <div class="login-card">
+          <div class="demo-badge">DEMO</div>
+          <p class="kicker orange">ВХОД ВЛАДЕЛЬЦА</p>
+          <h2>Добро пожаловать</h2>
+          <p class="login-intro">Используйте демонстрационные данные, указанные ниже.</p>
+          <form id="loginForm" autocomplete="off">
+            <label><span>Email владельца</span><input id="loginEmail" type="email" value="owner@isgroupoutlet.demo" required /></label>
+            <label><span>Пароль</span><input id="loginPassword" type="password" value="outlet2026" required /></label>
+            <p class="login-error" id="loginError" hidden>Проверьте демонстрационный email и пароль.</p>
+            <button class="primary-button full" type="submit">Войти в демо-панель</button>
+          </form>
+          <div class="demo-credentials"><strong>Демо-доступ</strong><span>owner@isgroupoutlet.demo</span><span>outlet2026</span></div>
+          <p class="security-note">Это не настоящая авторизация. На GitHub Pages данные хранятся только в вашем браузере.</p>
+          <a class="back-link" href="./index.html">← Вернуться в магазин</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="admin-app" id="adminApp" hidden>
+      <aside class="admin-sidebar">
+        <a class="brand sidebar-brand" href="./index.html"><span>IS GROUP OUTLET</span><i></i></a>
+        <p class="sidebar-caption">Панель владельца</p>
+        <nav class="admin-nav" aria-label="Разделы панели">
+          <button class="active" type="button" data-admin-section="overview"><span>⌂</span><b>Обзор</b></button>
+          <button type="button" data-admin-section="products"><span>▦</span><b>Товары</b><small id="sidebarProductCount">0</small></button>
+          <button type="button" data-admin-section="orders"><span>▤</span><b>Заказы</b><small>5</small></button>
+          <button type="button" data-admin-section="team"><span>◎</span><b>Сотрудники</b><small id="sidebarStaffCount">0</small></button>
+        </nav>
+        <div class="sidebar-bottom">
+          <a href="./index.html"><span>↗</span> Открыть витрину</a>
+          <button id="logoutButton" type="button"><span>←</span> Выйти</button>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div><p id="sectionEyebrow">ОБЗОР МАГАЗИНА</p><h1 id="sectionTitle">Добрый вечер, владелец</h1></div>
+          <div class="owner-chip"><span>AN</span><div><strong>Владелец</strong><small>Полный доступ</small></div></div>
+        </header>
+
+        <div class="demo-banner"><span>DEMO</span><p><strong>Презентационный режим.</strong> Изменения сохраняются только в этом браузере и сразу отображаются на демонстрационной витрине.</p></div>
+
+        <section class="admin-section active" id="section-overview">
+          <div class="stats-grid">
+            <article><p>Всего товаров</p><strong id="statTotal">0</strong><small>в каталоге</small><i class="blue">▦</i></article>
+            <article><p>На витрине</p><strong id="statPublished">0</strong><small>опубликовано</small><i class="green">●</i></article>
+            <article><p>Заказы за месяц</p><strong>8</strong><small class="positive">+14% к июлю</small><i class="yellow">▤</i></article>
+            <article><p>Выручка за месяц</p><strong>2 047,50 €</strong><small class="positive">+9,6% к июлю</small><i class="orange">€</i></article>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="panel revenue-panel">
+              <div class="panel-heading"><div><p>ДИНАМИКА ПРОДАЖ</p><h2>Выручка по месяцам</h2></div><select aria-label="Период"><option>2026 год</option></select></div>
+              <div class="chart" aria-label="Демонстрационный график выручки">
+                <div style="--bar:36%"><b>820 €</b><span></span><small>Март</small></div>
+                <div style="--bar:48%"><b>1 140 €</b><span></span><small>Апр.</small></div>
+                <div style="--bar:61%"><b>1 480 €</b><span></span><small>Май</small></div>
+                <div style="--bar:72%"><b>1 760 €</b><span></span><small>Июнь</small></div>
+                <div style="--bar:78%"><b>1 868 €</b><span></span><small>Июль</small></div>
+                <div class="current" style="--bar:86%"><b>2 048 €</b><span></span><small>Авг.</small></div>
+              </div>
+            </article>
+
+            <article class="panel stock-panel">
+              <div class="panel-heading"><div><p>ТРЕБУЕТ ВНИМАНИЯ</p><h2>Мало на складе</h2></div><button type="button" data-go-section="products">Все товары →</button></div>
+              <div class="attention-list" id="lowStockList"></div>
+            </article>
+          </div>
+
+          <article class="panel recent-orders-panel">
+            <div class="panel-heading"><div><p>ПОСЛЕДНИЕ ОПЕРАЦИИ</p><h2>Новые заказы</h2></div><button type="button" data-go-section="orders">Все заказы →</button></div>
+            <div class="table-scroll"><table class="admin-table"><thead><tr><th>Заказ</th><th>Клиент</th><th>Получение</th><th>Сумма</th><th>Оплата</th><th>Статус</th></tr></thead><tbody id="recentOrdersBody"></tbody></table></div>
+          </article>
+        </section>
+
+        <section class="admin-section" id="section-products" hidden>
+          <div class="section-actions-heading">
+            <div><p>КАТАЛОГ И ОСТАТКИ</p><h2>Управление товарами</h2><span>Добавленные вручную товары по умолчанию сразу публикуются.</span></div>
+            <div class="action-group"><button class="secondary-button" id="exportProducts" type="button">Экспорт JSON</button><button class="primary-button" id="addProductButton" type="button">＋ Добавить товар</button></div>
+          </div>
+          <div class="toolbar">
+            <label class="toolbar-search"><span>⌕</span><input id="adminProductSearch" type="search" placeholder="Название, бренд или артикул" /></label>
+            <select id="adminProductStatus" aria-label="Статус товара"><option value="all">Все статусы</option><option value="published">На витрине</option><option value="draft">Скрытые</option></select>
+            <button class="text-button danger" id="resetDemoProducts" type="button">Сбросить демо-товары</button>
+          </div>
+          <div class="product-admin-list" id="adminProductList"></div>
+          <div class="admin-empty" id="adminProductEmpty" hidden><span>⌕</span><h3>Товары не найдены</h3><p>Измените поиск или статус.</p></div>
+        </section>
+
+        <section class="admin-section" id="section-orders" hidden>
+          <div class="section-actions-heading">
+            <div><p>КОНТРОЛЬ ЗАКАЗОВ</p><h2>Заказы и выдача</h2><span>Статус оплаты поступает от платёжного провайдера и не редактируется сотрудником.</span></div>
+            <button class="secondary-button" type="button">Скачать отчёт за август</button>
+          </div>
+          <div class="order-security-grid">
+            <article><i>✓</i><div><strong>Оплата защищена</strong><p>Оплачено/не оплачено меняет только платёжная система.</p></div></article>
+            <article><i>#</i><div><strong>Контроль выдачи</strong><p>Самовывоз подтверждается кодом клиента и сотрудника.</p></div></article>
+            <article><i>↺</i><div><strong>Журнал действий</strong><p>В полной версии сохраняется кто и когда менял заказ.</p></div></article>
+          </div>
+          <article class="panel orders-table-panel">
+            <div class="table-scroll"><table class="admin-table large"><thead><tr><th>Заказ</th><th>Дата</th><th>Клиент</th><th>Товар</th><th>Сумма</th><th>Оплата</th><th>Получение</th><th>Статус</th></tr></thead><tbody id="ordersBody"></tbody></table></div>
+          </article>
+        </section>
+
+        <section class="admin-section" id="section-team" hidden>
+          <div class="section-actions-heading">
+            <div><p>ДОСТУП И РОЛИ</p><h2>Сотрудники</h2><span>В будущей версии каждый сотрудник получит только необходимые права.</span></div>
+            <button class="primary-button" id="addStaffButton" type="button">＋ Добавить сотрудника</button>
+          </div>
+          <div class="role-explainer">
+            <div><span class="role-dot owner"></span><strong>Владелец</strong><p>Финансы, товары, заказы, сотрудники и настройки.</p></div>
+            <div><span class="role-dot manager"></span><strong>Менеджер каталога</strong><p>Добавление и редактирование товаров без доступа к оплатам.</p></div>
+            <div><span class="role-dot pickup"></span><strong>Выдача заказов</strong><p>Только подготовка и подтверждение выдачи по коду.</p></div>
+          </div>
+          <div class="staff-grid" id="staffList"></div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="editor-dialog" id="productEditor">
+      <form id="productForm">
+        <div class="dialog-heading"><div><p>КАРТОЧКА ТОВАРА</p><h2 id="productEditorTitle">Новый товар</h2></div><button class="dialog-close" id="closeProductEditor" type="button" aria-label="Закрыть">×</button></div>
+        <input type="hidden" name="id" />
+        <input type="hidden" name="imageData" />
+        <div class="editor-grid">
+          <div class="editor-fields">
+            <div class="field-row three"><label><span>Название ES *</span><input name="titleEs" required /></label><label><span>Название EN</span><input name="titleEn" /></label><label><span>Название RU</span><input name="titleRu" /></label></div>
+            <div class="field-row three"><label><span>Бренд *</span><input name="brand" required /></label><label><span>Категория</span><select name="category"><option value="tv">Телевизоры</option><option value="coffee">Кофе</option><option value="cleaning">Уборка</option><option value="kitchen">Кухня</option><option value="large">Крупная техника</option></select></label><label><span>Артикул</span><input name="sku" placeholder="IS-0001" /></label></div>
+            <div class="field-row four"><label><span>Цена, € *</span><input name="price" type="number" min="0" step="0.01" required /></label><label><span>Старая цена, €</span><input name="oldPrice" type="number" min="0" step="0.01" /></label><label><span>Остаток *</span><input name="stock" type="number" min="0" step="1" required /></label><label><span>Статус</span><select name="status"><option value="published">Сразу на витрину</option><option value="draft">Скрыть</option></select></label></div>
+            <div class="field-row two"><label><span>Состояние</span><input name="condition" placeholder="Новый / Витринный" /></label><label><span>Иконка</span><input name="emoji" maxlength="4" placeholder="📦" /></label></div>
+            <label><span>Описание ES</span><textarea name="descriptionEs" rows="3"></textarea></label>
+            <div class="field-row two"><label><span>Описание EN</span><textarea name="descriptionEn" rows="3"></textarea></label><label><span>Описание RU</span><textarea name="descriptionRu" rows="3"></textarea></label></div>
+          </div>
+          <aside class="image-editor">
+            <span>Фотография товара</span>
+            <div class="image-preview" id="adminImagePreview"><b>ФОТО</b></div>
+            <label class="upload-button">Загрузить фото<input id="productImageFile" type="file" accept="image/*" /></label>
+            <label><span>Или ссылка на изображение</span><input name="imageUrl" type="url" placeholder="https://…" /></label>
+            <small>В демо-файле изображение хранится только в браузере. Используйте небольшие файлы.</small>
+          </aside>
+        </div>
+        <div class="dialog-footer"><p>Демонстрация: изменения увидит только этот браузер.</p><div><button class="secondary-button" id="cancelProductEditor" type="button">Отмена</button><button class="primary-button" type="submit">Сохранить товар</button></div></div>
+      </form>
+    </dialog>
+
+    <dialog class="staff-dialog" id="staffEditor">
+      <form id="staffForm">
+        <div class="dialog-heading"><div><p>ДОСТУП СОТРУДНИКА</p><h2 id="staffEditorTitle">Новый сотрудник</h2></div><button class="dialog-close" id="closeStaffEditor" type="button">×</button></div>
+        <input type="hidden" name="id" />
+        <div class="staff-form-grid"><label><span>Имя *</span><input name="name" required /></label><label><span>Email *</span><input name="email" type="email" required /></label><label><span>Роль</span><select name="role"><option value="manager">Менеджер каталога</option><option value="orders">Менеджер заказов</option><option value="pickup">Выдача заказов</option></select></label><label><span>Статус</span><select name="status"><option value="active">Активен</option><option value="paused">Доступ приостановлен</option></select></label></div>
+        <p class="staff-security-note">Сотрудник не сможет менять статус оплаты, финансовые настройки или права владельца.</p>
+        <div class="dialog-footer"><p>В реальной версии приглашение придёт на email.</p><div><button class="secondary-button" id="cancelStaffEditor" type="button">Отмена</button><button class="primary-button" type="submit">Добавить сотрудника</button></div></div>
+      </form>
+    </dialog>
+
+    <div class="admin-toast" id="adminToast" role="status" aria-live="polite"></div>
+    <script src="./admin.js"></script>
+  </body>
+</html>
