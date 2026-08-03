@@ -140,9 +140,11 @@ button { cursor: pointer; }
 .admin-table td small { display: block; margin-top: 3px; color: var(--muted); font-size: 7px; }
 .status-chip, .payment-chip { display: inline-flex; min-height: 24px; align-items: center; gap: 5px; padding: 0 8px; border-radius: 20px; font-size: 7px; font-weight: 900; }
 .status-chip.processing { color: #805b00; background: #fff2b3; }
+.status-chip.new { color: #9c351f; background: #ffe4dc; }
 .status-chip.ready { color: #087a59; background: #dff7ef; }
 .status-chip.shipped { color: #176ab4; background: #e2f0ff; }
 .payment-chip { color: #087a59; background: #dff7ef; }
+.payment-chip.demo { color: #36546e; background: #eaf0f5; }
 .payment-chip::before { content: '🔒'; font-size: 8px; }
 
 /* Product management */
@@ -314,6 +316,86 @@ dialog::backdrop { background: rgba(3,19,34,.72); backdrop-filter: blur(4px); }
   .dialog-footer > div { width: 100%; }
   .dialog-footer button { flex: 1; }
   .staff-security-note { margin-inline: 17px; }
+}
+
+/* Readability pass: the presentation panel must remain comfortable at normal zoom. */
+.kicker,
+.section-actions-heading > div > p,
+.panel-heading p,
+.admin-topbar p,
+.dialog-heading p { font-size: 12px; }
+.primary-button,
+.secondary-button { min-height: 48px; font-size: 14px; }
+.login-card label,
+.editor-dialog label,
+.staff-dialog label { font-size: 12px; }
+.demo-badge,
+.demo-credentials { font-size: 12px; }
+.security-note { font-size: 11px; }
+.back-link { font-size: 13px; }
+.sidebar-caption { font-size: 11px; }
+.admin-nav button { min-height: 50px; }
+.admin-nav button b { font-size: 14px; }
+.admin-nav button small { min-width: 24px; height: 24px; font-size: 11px; }
+.sidebar-bottom a,
+.sidebar-bottom button { min-height: 43px; font-size: 13px; }
+.owner-chip strong { font-size: 13px; }
+.owner-chip small { font-size: 11px; }
+.demo-banner p { font-size: 13px; }
+.demo-banner > span { font-size: 11px; }
+.stats-grid p { font-size: 13px; }
+.stats-grid small { font-size: 11px; line-height: 1.4; }
+.panel-heading h2 { font-size: 21px; }
+.panel-heading select,
+.panel-heading button { font-size: 12px; }
+.chart b,
+.chart small { font-size: 11px; }
+.attention-item strong { font-size: 13px; }
+.attention-item small { font-size: 11px; }
+.attention-item > b { font-size: 12px; }
+.admin-table th { font-size: 11px; }
+.admin-table td,
+.admin-table td strong { font-size: 13px; }
+.admin-table td small { font-size: 11px; }
+.status-chip,
+.payment-chip { min-height: 28px; padding-inline: 10px; font-size: 10px; }
+.payment-chip::before { font-size: 10px; }
+.section-actions-heading > div > span { font-size: 13px; line-height: 1.5; }
+.toolbar input,
+.toolbar select { min-height: 46px; font-size: 13px; }
+.text-button { font-size: 12px; }
+.admin-product-main h3 { font-size: 16px; }
+.admin-product-main p { font-size: 12px; line-height: 1.45; }
+.admin-product-cell span { font-size: 10px; }
+.admin-product-cell strong { font-size: 14px; }
+.small-button { min-height: 38px; font-size: 12px; }
+.catalog-state { min-height: 29px; font-size: 10px; }
+.admin-empty p { font-size: 13px; }
+.order-security-grid strong,
+.role-explainer strong { font-size: 13px; }
+.order-security-grid p,
+.role-explainer p { font-size: 12px; }
+.staff-avatar { font-size: 14px; }
+.staff-card h3 { font-size: 16px; }
+.staff-card > p,
+.staff-meta span { font-size: 12px; }
+.image-editor > span { font-size: 11px; }
+.image-preview { font-size: 13px; }
+.image-editor small,
+.dialog-footer p { font-size: 11px; }
+.staff-security-note { font-size: 12px; }
+.admin-toast { font-size: 13px; }
+
+@media (max-width: 650px) {
+  .admin-nav button { min-width: 88px; font-size: 11px; }
+  .admin-nav button b { font-size: 11px; }
+  .admin-topbar h1 { font-size: 23px; }
+  .stats-grid p { font-size: 12px; }
+  .stats-grid small { font-size: 10px; }
+  .admin-table th { font-size: 10px; }
+  .admin-table td,
+  .admin-table td strong { font-size: 12px; }
+  .section-actions-heading > div > span { font-size: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

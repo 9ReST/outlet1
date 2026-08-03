@@ -1,3 +1,5 @@
+const ORDER_STORAGE_KEY = 'isgroup-demo-orders';
+
 const defaultProducts = [
   {
     id: 'samsung-qled-55', brand: 'Samsung', category: 'tv', price: 449.5, oldPrice: 899, stock: 2, emoji: '📺',
@@ -93,9 +95,18 @@ const translations = {
   }
 };
 
+function readStoredCart() {
+  try {
+    const stored = JSON.parse(localStorage.getItem('isgroup-demo-cart') || '{}');
+    return stored && typeof stored === 'object' && !Array.isArray(stored) ? stored : {};
+  } catch {
+    return {};
+  }
+}
+
 const state = {
   lang: localStorage.getItem('isgroup-demo-lang') || 'es',
-  cart: JSON.parse(localStorage.getItem('isgroup-demo-cart') || '{}')
+  cart: readStoredCart()
 };
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -168,7 +179,24 @@ function renderProducts() {
 }
 
 function saveCart() { localStorage.setItem('isgroup-demo-cart', JSON.stringify(state.cart)); }
-function cartQuantity() { return Object.values(state.cart).reduce((sum, quantity) => sum + quantity, 0); }
+
+function normalizeCart() {
+  const nextCart = {};
+  products.forEach((product) => {
+    if ((product.status || 'published') !== 'published' || Number(product.stock) <= 0) return;
+    const quantity = Math.max(0, Math.min(Math.floor(Number(state.cart[product.id]) || 0), Number(product.stock)));
+    if (quantity > 0) nextCart[product.id] = quantity;
+  });
+  if (JSON.stringify(nextCart) !== JSON.stringify(state.cart)) {
+    state.cart = nextCart;
+    saveCart();
+  }
+}
+
+function cartQuantity() {
+  normalizeCart();
+  return Object.values(state.cart).reduce((sum, quantity) => sum + Number(quantity || 0), 0);
+}
 function cartProductLabel(quantity) {
   if (state.lang === 'es') return quantity === 1 ? 'producto' : 'productos';
   if (state.lang === 'en') return quantity === 1 ? 'product' : 'products';
@@ -195,6 +223,7 @@ function changeQuantity(id, delta) {
 }
 
 function renderCart() {
+  normalizeCart();
   const items = products.filter((product) => state.cart[product.id]);
   const quantity = cartQuantity();
   const total = items.reduce((sum, product) => sum + product.price * state.cart[product.id], 0);
@@ -214,6 +243,43 @@ function renderCart() {
 
 function openCart() { $('#cartDrawer').classList.add('open'); $('#overlay').classList.add('open'); $('#cartDrawer').setAttribute('aria-hidden', 'false'); document.body.classList.add('locked'); }
 function closeCart() { $('#cartDrawer').classList.remove('open'); $('#overlay').classList.remove('open'); $('#cartDrawer').setAttribute('aria-hidden', 'true'); document.body.classList.remove('locked'); }
+
+function readDemoOrders() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(ORDER_STORAGE_KEY) || '[]');
+    return Array.isArray(stored) ? stored : [];
+  } catch {
+    return [];
+  }
+}
+
+function createDemoOrder(form) {
+  normalizeCart();
+  const items = products.filter((product) => state.cart[product.id]);
+  if (!items.length) return null;
+  const data = new FormData(form);
+  const now = new Date();
+  const order = {
+    id: `IS-D${now.getTime().toString(36).slice(-6).toUpperCase()}`,
+    createdAt: now.toISOString(),
+    date: new Intl.DateTimeFormat('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(now),
+    customer: String(data.get('name') || '').trim(),
+    contact: String(data.get('phone') || '').trim(),
+    deliveryCode: String(data.get('delivery') || 'pickup'),
+    delivery: t(String(data.get('delivery') || 'pickup')),
+    comment: String(data.get('comment') || '').trim(),
+    product: items.map((product) => `${product.title.ru || product.title.es} × ${state.cart[product.id]}`).join(', '),
+    items: items.map((product) => ({ id: product.id, title: product.title.ru || product.title.es, quantity: state.cart[product.id], price: product.price })),
+    total: items.reduce((sum, product) => sum + product.price * state.cart[product.id], 0),
+    paymentStatus: 'demo',
+    status: 'new',
+    source: 'storefront-demo'
+  };
+  const orders = readDemoOrders();
+  orders.unshift(order);
+  localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(orders.slice(0, 100)));
+  return order;
+}
 
 function openProduct(id) {
   const product = products.find((item) => item.id === id);
@@ -250,7 +316,22 @@ $('#overlay').addEventListener('click', closeCart);
 $('#productModalClose').addEventListener('click', () => $('#productModal').close());
 $('#checkoutButton').addEventListener('click', () => { if (!cartQuantity()) return; closeCart(); $('#checkoutModal').showModal(); });
 $('#checkoutClose').addEventListener('click', () => $('#checkoutModal').close());
-$('#checkoutForm').addEventListener('submit', (event) => { event.preventDefault(); $('#checkoutModal').close(); state.cart = {}; saveCart(); renderCart(); event.target.reset(); showToast(t('requestSent')); });
+$('#checkoutForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const order = createDemoOrder(event.currentTarget);
+  if (!order) {
+    $('#checkoutModal').close();
+    renderCart();
+    showToast(t('cartEmptyTitle'));
+    return;
+  }
+  $('#checkoutModal').close();
+  state.cart = {};
+  saveCart();
+  renderCart();
+  event.currentTarget.reset();
+  showToast(`${t('requestSent')} · ${order.id}`);
+});
 $('#menuTrigger').addEventListener('click', () => { const open = $('#mobileNav').classList.toggle('open'); $('#menuTrigger').setAttribute('aria-expanded', String(open)); });
 $$('#mobileNav a').forEach((link) => link.addEventListener('click', () => { $('#mobileNav').classList.remove('open'); $('#menuTrigger').setAttribute('aria-expanded', 'false'); }));
 $('#year').textContent = new Date().getFullYear();

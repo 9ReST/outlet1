@@ -2,6 +2,7 @@ const ADMIN_EMAIL = 'owner@isgroupoutlet.demo';
 const ADMIN_PASSWORD = 'outlet2026';
 const PRODUCT_STORAGE_KEY = 'isgroup-demo-products';
 const STAFF_STORAGE_KEY = 'isgroup-demo-staff';
+const ORDER_STORAGE_KEY = 'isgroup-demo-orders';
 
 const defaultProducts = [
   { id: 'samsung-qled-55', sku: 'IS-TV-001', brand: 'Samsung', category: 'tv', price: 449.5, oldPrice: 899, stock: 2, status: 'published', emoji: '📺', image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=900&q=82', title: { es: 'Televisor Samsung QLED 55”', en: 'Samsung QLED 55” TV', ru: 'Телевизор Samsung QLED 55”' }, description: { es: 'Televisor 4K de exposición, revisado y listo para disfrutar.', en: 'Inspected 4K display model, ready to enjoy.', ru: 'Проверенный выставочный телевизор 4K, готовый к использованию.' }, condition: { es: 'Exposición', en: 'Display model', ru: 'Витринный' } },
@@ -29,7 +30,8 @@ const defaultStaff = [
 const roleLabels = { owner: 'Владелец', manager: 'Менеджер каталога', orders: 'Менеджер заказов', pickup: 'Выдача заказов' };
 const rolePermissions = { owner: 'Полный доступ', manager: 'Товары и остатки', orders: 'Заказы без финансов', pickup: 'Подготовка и выдача' };
 const categoryLabels = { tv: 'Телевизоры', coffee: 'Кофе', cleaning: 'Уборка', kitchen: 'Кухня', large: 'Крупная техника' };
-const orderStatusLabels = { processing: 'Готовится', ready: 'Готов к выдаче', shipped: 'Передан в доставку' };
+const orderStatusLabels = { new: 'Новая заявка', processing: 'Готовится', ready: 'Готов к выдаче', shipped: 'Передан в доставку' };
+const deliveryLabels = { pickup: 'Самовывоз в Новельде', spain: 'Доставка по Испании', local: 'Местная доставка', eu: 'Доставка по ЕС' };
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -54,7 +56,27 @@ function loadList(key, fallback) {
 
 let products = loadList(PRODUCT_STORAGE_KEY, defaultProducts).map((product) => ({ ...product, status: product.status || 'published' }));
 let staff = loadList(STAFF_STORAGE_KEY, defaultStaff);
+let storefrontOrders = loadList(ORDER_STORAGE_KEY, []);
 let toastTimer;
+
+function getAllOrders() {
+  const recentStorefrontOrders = [...storefrontOrders].sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+  return [...recentStorefrontOrders, ...demoOrders];
+}
+
+function orderDelivery(order) {
+  return deliveryLabels[order.deliveryCode] || order.delivery || 'Не указано';
+}
+
+function paymentState(order) {
+  return order.paymentStatus || 'confirmed';
+}
+
+function paymentChip(order) {
+  const state = paymentState(order);
+  const label = state === 'confirmed' ? 'Подтверждена' : 'Не списывалась · демо';
+  return `<span class="payment-chip ${state}">${label}</span>`;
+}
 
 function saveProducts(message = 'Изменения товара сохранены') {
   try {
@@ -116,23 +138,31 @@ function renderAll() {
   renderOrders();
   renderStaff();
   $('#sidebarProductCount').textContent = products.length;
+  $('#sidebarOrderCount').textContent = getAllOrders().length;
   $('#sidebarStaffCount').textContent = staff.length;
 }
 
 function renderOverview() {
+  const orders = getAllOrders();
   $('#statTotal').textContent = products.length;
   $('#statPublished').textContent = products.filter((product) => product.status === 'published').length;
+  $('#statOrderCount').textContent = orders.length;
+  $('#statRevenue').textContent = money(orders.filter((order) => paymentState(order) === 'confirmed').reduce((sum, order) => sum + Number(order.total || 0), 0));
   const low = [...products].filter((product) => Number(product.stock) <= 2).sort((a, b) => a.stock - b.stock).slice(0, 4);
   $('#lowStockList').innerHTML = low.length ? low.map((product) => `<article class="attention-item">${productImage(product, 'mini-product-image')}<div><strong>${escapeHtml(product.title.ru || product.title.es)}</strong><small>${escapeHtml(product.brand)} · ${escapeHtml(product.sku || 'Без артикула')}</small></div><b>${Number(product.stock)} шт.</b></article>`).join('') : '<p class="no-attention">Все остатки в норме</p>';
-  $('#recentOrdersBody').innerHTML = demoOrders.slice(0, 3).map(orderRow).join('');
+  $('#recentOrdersBody').innerHTML = orders.slice(0, 3).map(orderRow).join('');
 }
 
 function orderRow(order, detailed = false) {
-  return `<tr><td><strong>${escapeHtml(order.id)}</strong><small>${escapeHtml(order.date)}</small></td>${detailed ? `<td>${escapeHtml(order.date)}</td>` : ''}<td><strong>${escapeHtml(order.customer)}</strong><small>${escapeHtml(order.contact)}</small></td>${detailed ? `<td>${escapeHtml(order.product)}</td>` : ''}<td>${escapeHtml(order.delivery)}</td><td><strong>${money(order.total)}</strong></td><td><span class="payment-chip">Подтверждена</span></td>${detailed ? '' : `<td><span class="status-chip ${order.status}">${orderStatusLabels[order.status]}</span></td>`}${detailed ? `<td><span class="status-chip ${order.status}">${orderStatusLabels[order.status]}</span></td>` : ''}</tr>`;
+  const status = orderStatusLabels[order.status] || orderStatusLabels.processing;
+  if (detailed) {
+    return `<tr><td><strong>${escapeHtml(order.id)}</strong></td><td>${escapeHtml(order.date)}</td><td><strong>${escapeHtml(order.customer)}</strong><small>${escapeHtml(order.contact)}</small></td><td>${escapeHtml(order.product)}</td><td><strong>${money(order.total)}</strong></td><td>${paymentChip(order)}</td><td>${escapeHtml(orderDelivery(order))}</td><td><span class="status-chip ${escapeHtml(order.status || 'processing')}">${escapeHtml(status)}</span></td></tr>`;
+  }
+  return `<tr><td><strong>${escapeHtml(order.id)}</strong><small>${escapeHtml(order.date)}</small></td><td><strong>${escapeHtml(order.customer)}</strong><small>${escapeHtml(order.contact)}</small></td><td>${escapeHtml(orderDelivery(order))}</td><td><strong>${money(order.total)}</strong></td><td>${paymentChip(order)}</td><td><span class="status-chip ${escapeHtml(order.status || 'processing')}">${escapeHtml(status)}</span></td></tr>`;
 }
 
 function renderOrders() {
-  $('#ordersBody').innerHTML = demoOrders.map((order) => `<tr><td><strong>${escapeHtml(order.id)}</strong></td><td>${escapeHtml(order.date)}</td><td><strong>${escapeHtml(order.customer)}</strong><small>${escapeHtml(order.contact)}</small></td><td>${escapeHtml(order.product)}</td><td><strong>${money(order.total)}</strong></td><td><span class="payment-chip">Подтверждена</span></td><td>${escapeHtml(order.delivery)}</td><td><span class="status-chip ${order.status}">${orderStatusLabels[order.status]}</span></td></tr>`).join('');
+  $('#ordersBody').innerHTML = getAllOrders().map((order) => orderRow(order, true)).join('');
 }
 
 function renderProducts() {
@@ -264,6 +294,30 @@ function exportProducts() {
   showToast('Каталог экспортирован в JSON');
 }
 
+function exportOrders() {
+  const columns = ['Заказ', 'Дата', 'Клиент', 'Телефон', 'Товар', 'Сумма EUR', 'Оплата', 'Получение', 'Статус'];
+  const rows = getAllOrders().map((order) => [
+    order.id,
+    order.date,
+    order.customer,
+    order.contact,
+    order.product,
+    Number(order.total || 0).toFixed(2),
+    paymentState(order) === 'confirmed' ? 'Подтверждена' : 'Не списывалась — демо',
+    orderDelivery(order),
+    orderStatusLabels[order.status] || orderStatusLabels.processing
+  ]);
+  const csvCell = (value) => `"${String(value ?? '').replaceAll('"', '""')}"`;
+  const csv = [columns, ...rows].map((row) => row.map(csvCell).join(';')).join('\n');
+  const blob = new Blob([`\ufeff${csv}`], { type: 'text/csv;charset=utf-8' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'isgroup-orders-demo.csv';
+  link.click();
+  URL.revokeObjectURL(link.href);
+  showToast('Отчёт по заказам скачан');
+}
+
 $('#loginForm').addEventListener('submit', (event) => {
   event.preventDefault();
   const valid = $('#loginEmail').value.trim().toLowerCase() === ADMIN_EMAIL && $('#loginPassword').value === ADMIN_PASSWORD;
@@ -281,6 +335,7 @@ $('#closeProductEditor').addEventListener('click', closeProductEditor);
 $('#cancelProductEditor').addEventListener('click', closeProductEditor);
 $('#productForm').addEventListener('submit', saveProductFromForm);
 $('#exportProducts').addEventListener('click', exportProducts);
+$('#exportOrders').addEventListener('click', exportOrders);
 $('#addStaffButton').addEventListener('click', () => openStaffEditor());
 $('#closeStaffEditor').addEventListener('click', closeStaffEditor);
 $('#cancelStaffEditor').addEventListener('click', closeStaffEditor);
@@ -325,5 +380,17 @@ document.addEventListener('click', (event) => {
   const deleteStaff = event.target.closest('[data-delete-staff]');
   if (deleteStaff && window.confirm('Удалить демонстрационного сотрудника?')) { staff = staff.filter((item) => item.id !== deleteStaff.dataset.deleteStaff); saveStaff('Сотрудник удалён'); }
 });
+
+function reloadBrowserData() {
+  products = loadList(PRODUCT_STORAGE_KEY, defaultProducts).map((product) => ({ ...product, status: product.status || 'published' }));
+  staff = loadList(STAFF_STORAGE_KEY, defaultStaff);
+  storefrontOrders = loadList(ORDER_STORAGE_KEY, []);
+  if (!$('#adminApp').hidden) renderAll();
+}
+
+window.addEventListener('storage', (event) => {
+  if ([PRODUCT_STORAGE_KEY, STAFF_STORAGE_KEY, ORDER_STORAGE_KEY].includes(event.key)) reloadBrowserData();
+});
+window.addEventListener('focus', reloadBrowserData);
 
 if (sessionStorage.getItem('isgroup-demo-admin-session') === '1') showAdmin(); else showLogin();

@@ -47,7 +47,7 @@
         <nav class="admin-nav" aria-label="Разделы панели">
           <button class="active" type="button" data-admin-section="overview"><span>⌂</span><b>Обзор</b></button>
           <button type="button" data-admin-section="products"><span>▦</span><b>Товары</b><small id="sidebarProductCount">0</small></button>
-          <button type="button" data-admin-section="orders"><span>▤</span><b>Заказы</b><small>5</small></button>
+          <button type="button" data-admin-section="orders"><span>▤</span><b>Заказы</b><small id="sidebarOrderCount">0</small></button>
           <button type="button" data-admin-section="team"><span>◎</span><b>Сотрудники</b><small id="sidebarStaffCount">0</small></button>
         </nav>
         <div class="sidebar-bottom">
@@ -62,14 +62,14 @@
           <div class="owner-chip"><span>AN</span><div><strong>Владелец</strong><small>Полный доступ</small></div></div>
         </header>
 
-        <div class="demo-banner"><span>DEMO</span><p><strong>Презентационный режим.</strong> Изменения сохраняются только в этом браузере и сразу отображаются на демонстрационной витрине.</p></div>
+        <div class="demo-banner"><span>DEMO</span><p><strong>Презентационный режим.</strong> Товары и тестовые заказы сохраняются только в этом браузере. Заявка с витрины автоматически появляется в разделе «Заказы».</p></div>
 
         <section class="admin-section active" id="section-overview">
           <div class="stats-grid">
             <article><p>Всего товаров</p><strong id="statTotal">0</strong><small>в каталоге</small><i class="blue">▦</i></article>
             <article><p>На витрине</p><strong id="statPublished">0</strong><small>опубликовано</small><i class="green">●</i></article>
-            <article><p>Заказы за месяц</p><strong>8</strong><small class="positive">+14% к июлю</small><i class="yellow">▤</i></article>
-            <article><p>Выручка за месяц</p><strong>2 047,50 €</strong><small class="positive">+9,6% к июлю</small><i class="orange">€</i></article>
+            <article><p>Заказы за месяц</p><strong id="statOrderCount">0</strong><small>включая тестовые заявки</small><i class="yellow">▤</i></article>
+            <article><p>Подтверждённая выручка</p><strong id="statRevenue">0 €</strong><small>только подтверждённые платежи</small><i class="orange">€</i></article>
           </div>
 
           <div class="dashboard-grid">
@@ -113,8 +113,8 @@
 
         <section class="admin-section" id="section-orders" hidden>
           <div class="section-actions-heading">
-            <div><p>КОНТРОЛЬ ЗАКАЗОВ</p><h2>Заказы и выдача</h2><span>Статус оплаты поступает от платёжного провайдера и не редактируется сотрудником.</span></div>
-            <button class="secondary-button" type="button">Скачать отчёт за август</button>
+            <div><p>КОНТРОЛЬ ЗАКАЗОВ</p><h2>Заказы и выдача</h2><span>Заявки с витрины появляются автоматически. Статус оплаты поступает от платёжного провайдера и не редактируется сотрудником.</span></div>
+            <button class="secondary-button" id="exportOrders" type="button">Скачать отчёт CSV</button>
           </div>
           <div class="order-security-grid">
             <article><i>✓</i><div><strong>Оплата защищена</strong><p>Оплачено/не оплачено меняет только платёжная система.</p></div></article>
