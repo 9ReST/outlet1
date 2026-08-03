@@ -226,11 +226,22 @@ dialog::backdrop { background: rgba(3,19,34,.72); backdrop-filter: blur(4px); }
 .checkout-modal { width: min(610px, calc(100% - 30px)); }
 .checkout-content { padding: 52px; }
 .checkout-content h2 { margin: 0; font-family: 'Space Grotesk', 'Manrope', Arial, sans-serif; font-size: 38px; }
-.checkout-content > p:not(.eyebrow) { color: var(--muted); line-height: 1.6; }
+.checkout-content > div > p:not(.eyebrow) { color: var(--muted); line-height: 1.6; }
 .checkout-modal form { display: grid; gap: 15px; margin-top: 25px; }
 .checkout-modal label { display: grid; gap: 7px; color: var(--muted); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
 .checkout-modal textarea { min-height: 90px; padding-top: 12px; resize: vertical; }
 .demo-warning { margin: 0; padding: 11px 13px; color: #8b5500; background: #fff3c4; border-radius: 7px; font-size: 10px; line-height: 1.5; }
+.checkout-success { padding: 12px 0 2px; text-align: center; }
+.success-mark { width: 74px; height: 74px; display: grid; place-items: center; margin: 0 auto 22px; color: var(--navy); background: var(--yellow); border-radius: 50%; font-size: 38px; font-weight: 900; box-shadow: 0 12px 28px rgba(255,212,0,.3); }
+.checkout-success .eyebrow { justify-content: center; }
+.checkout-success > p:not(.eyebrow) { max-width: 430px; margin: 14px auto 0; }
+.success-order-number { display: grid; gap: 7px; margin: 27px 0 24px; padding: 18px; background: #f4f7f8; border: 1px solid var(--line); border-radius: 11px; }
+.success-order-number span { color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.success-order-number strong { font-family: 'Space Grotesk', 'Manrope', Arial, sans-serif; font-size: 26px; letter-spacing: .04em; }
+.success-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.checkout-success .button-outline { color: var(--ink); background: var(--white); border-color: var(--line); }
+.checkout-success .button-outline:hover { border-color: var(--ink); }
+.checkout-success .success-note { margin-top: 18px !important; font-size: 11px; }
 .toast { position: fixed; left: 50%; bottom: 25px; z-index: 120; padding: 13px 19px; visibility: hidden; opacity: 0; color: var(--white); background: var(--navy); border-radius: 8px; font-size: 12px; font-weight: 700; transform: translate(-50%, 15px); transition: .25s ease; box-shadow: var(--shadow); }
 .toast.show { visibility: visible; opacity: 1; transform: translate(-50%, 0); }
 
@@ -307,6 +318,7 @@ dialog::backdrop { background: rgba(3,19,34,.72); backdrop-filter: blur(4px); }
   .modal-product-copy { padding: 32px 23px; }
   .modal-product-copy h2 { font-size: 31px; }
   .checkout-content { padding: 48px 23px 28px; }
+  .success-actions { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

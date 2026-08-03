@@ -230,17 +230,31 @@
     <dialog class="checkout-modal" id="checkoutModal">
       <button class="modal-close" id="checkoutClose" type="button" aria-label="Cerrar">×</button>
       <div class="checkout-content">
-        <p class="eyebrow orange" data-i18n="reservationEyebrow">SOLICITUD DE RESERVA</p>
-        <h2 data-i18n="reservationTitle">Tus datos</h2>
-        <p data-i18n="reservationText">En la versión final el equipo recibirá la solicitud y confirmará disponibilidad, pago y entrega.</p>
-        <form id="checkoutForm">
-          <label><span data-i18n="nameLabel">Nombre</span><input name="name" required autocomplete="name" /></label>
-          <label><span data-i18n="phoneLabel">Teléfono</span><input name="phone" required autocomplete="tel" /></label>
-          <label><span data-i18n="deliveryMethod">Forma de entrega</span><select name="delivery" required id="deliverySelect"></select></label>
-          <label><span data-i18n="commentLabel">Comentario</span><textarea name="comment" rows="3"></textarea></label>
-          <p class="demo-warning" data-i18n="demoWarning">Demostración: no se envían datos y no se realiza ningún cobro.</p>
-          <button class="button button-yellow full" type="submit" data-i18n="sendRequest">Enviar solicitud de prueba</button>
-        </form>
+        <div id="checkoutFormView">
+          <p class="eyebrow orange" data-i18n="reservationEyebrow">SOLICITUD DE RESERVA</p>
+          <h2 data-i18n="reservationTitle">Tus datos</h2>
+          <p data-i18n="reservationText">En la versión final el equipo recibirá la solicitud y confirmará disponibilidad, pago y entrega.</p>
+          <form id="checkoutForm">
+            <label><span data-i18n="nameLabel">Nombre</span><input name="name" required autocomplete="name" /></label>
+            <label><span data-i18n="phoneLabel">Teléfono</span><input name="phone" required autocomplete="tel" /></label>
+            <label><span data-i18n="deliveryMethod">Forma de entrega</span><select name="delivery" required id="deliverySelect"></select></label>
+            <label><span data-i18n="commentLabel">Comentario</span><textarea name="comment" rows="3"></textarea></label>
+            <p class="demo-warning" data-i18n="demoWarning">Demostración: no se envían datos y no se realiza ningún cobro.</p>
+            <button class="button button-yellow full" type="submit" data-i18n="sendRequest">Enviar solicitud de prueba</button>
+          </form>
+        </div>
+        <div class="checkout-success" id="checkoutSuccess" hidden>
+          <div class="success-mark" aria-hidden="true">✓</div>
+          <p class="eyebrow orange" data-i18n="successEyebrow">SOLICITUD CREADA</p>
+          <h2 data-i18n="successTitle">¡Reserva recibida!</h2>
+          <p data-i18n="successText">El pedido ya aparece en el panel del propietario.</p>
+          <div class="success-order-number"><span data-i18n="orderNumber">Número de solicitud</span><strong id="successOrderId">—</strong></div>
+          <div class="success-actions">
+            <button class="button button-outline" id="continueShopping" type="button" data-i18n="continueShopping">Seguir comprando</button>
+            <a class="button button-yellow" href="./admin.html" data-i18n="openAdminDemo">Abrir panel demo</a>
+          </div>
+          <p class="success-note" data-i18n="successNote">Abra el panel en este mismo navegador para ver el pedido.</p>
+        </div>
       </div>
     </dialog>
 

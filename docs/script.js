@@ -63,6 +63,7 @@ const translations = {
     contactEyebrow: '¿NECESITAS AYUDA?', contactTitle: 'Te ayudamos a elegir', contactText: 'Escríbenos para comprobar stock, estado del producto y opciones de entrega.', emailUs: 'Enviar email', footerText: 'Tecnología y hogar de primeras marcas a precio outlet.', footerCatalog: 'Catálogo', footerHelp: 'Ayuda', footerFollow: 'Síguenos', demoNotice: 'Versión de presentación. Los productos y precios son ejemplos.',
     yourCart: 'TU CESTA', cartProducts: 'productos', cartEmptyTitle: 'Tu cesta está vacía', cartEmptyText: 'Añade una oferta para solicitar una reserva.', total: 'Total', deliveryCalculated: 'La entrega se calcula según el producto y la dirección.', reserveButton: 'Solicitar reserva', remove: 'Eliminar',
     reservationEyebrow: 'SOLICITUD DE RESERVA', reservationTitle: 'Tus datos', reservationText: 'En la versión final el equipo recibirá la solicitud y confirmará disponibilidad, pago y entrega.', nameLabel: 'Nombre', phoneLabel: 'Teléfono', deliveryMethod: 'Forma de entrega', commentLabel: 'Comentario', demoWarning: 'Demostración: no se envían datos y no se realiza ningún cobro.', sendRequest: 'Enviar solicitud de prueba', pickup: 'Recogida en Novelda', spain: 'Envío por España', local: 'Entrega local de gran tamaño', eu: 'Envío a la Unión Europea', requestSent: 'Solicitud de prueba creada correctamente',
+    successEyebrow: 'SOLICITUD CREADA', successTitle: '¡Reserva recibida!', successText: 'El pedido ya aparece en el panel del propietario.', orderNumber: 'Número de solicitud', continueShopping: 'Seguir comprando', openAdminDemo: 'Abrir panel demo', successNote: 'Abra el panel en este mismo navegador para ver el pedido.',
     condition: 'Estado', stock: 'Disponibles', category: 'Categoría', warranty: 'Garantía', warrantyValue: 'A confirmar según producto'
   },
   en: {
@@ -77,6 +78,7 @@ const translations = {
     contactEyebrow: 'NEED HELP?', contactTitle: 'We’ll help you choose', contactText: 'Message us to check stock, product condition and delivery options.', emailUs: 'Send email', footerText: 'Top-brand technology and home appliances at outlet prices.', footerCatalog: 'Catalogue', footerHelp: 'Help', footerFollow: 'Follow us', demoNotice: 'Presentation version. Products and prices are examples.',
     yourCart: 'YOUR CART', cartProducts: 'products', cartEmptyTitle: 'Your cart is empty', cartEmptyText: 'Add an offer to request a reservation.', total: 'Total', deliveryCalculated: 'Delivery is calculated by product and address.', reserveButton: 'Request reservation', remove: 'Remove',
     reservationEyebrow: 'RESERVATION REQUEST', reservationTitle: 'Your details', reservationText: 'In the final version the team will receive the request and confirm availability, payment and delivery.', nameLabel: 'Name', phoneLabel: 'Phone', deliveryMethod: 'Delivery method', commentLabel: 'Comment', demoWarning: 'Demo: no data is sent and no payment is made.', sendRequest: 'Send test request', pickup: 'Pickup in Novelda', spain: 'Delivery across Spain', local: 'Local large-item delivery', eu: 'European Union delivery', requestSent: 'Test request created successfully',
+    successEyebrow: 'REQUEST CREATED', successTitle: 'Reservation received!', successText: 'The order is already visible in the owner panel.', orderNumber: 'Request number', continueShopping: 'Continue shopping', openAdminDemo: 'Open admin demo', successNote: 'Open the panel in this same browser to see the order.',
     condition: 'Condition', stock: 'Available', category: 'Category', warranty: 'Warranty', warrantyValue: 'To be confirmed by product'
   },
   ru: {
@@ -91,6 +93,7 @@ const translations = {
     contactEyebrow: 'НУЖНА ПОМОЩЬ?', contactTitle: 'Поможем выбрать', contactText: 'Напишите нам, чтобы проверить наличие, состояние товара и варианты доставки.', emailUs: 'Написать на почту', footerText: 'Техника и товары для дома известных брендов по аутлет-ценам.', footerCatalog: 'Каталог', footerHelp: 'Помощь', footerFollow: 'Мы в соцсетях', demoNotice: 'Презентационная версия. Товары и цены приведены для примера.',
     yourCart: 'ВАША КОРЗИНА', cartProducts: 'товаров', cartEmptyTitle: 'Корзина пуста', cartEmptyText: 'Добавьте предложение, чтобы отправить заявку на резерв.', total: 'Сумма', deliveryCalculated: 'Доставка рассчитывается по товару и адресу.', reserveButton: 'Оформить резерв', remove: 'Удалить',
     reservationEyebrow: 'ЗАЯВКА НА РЕЗЕРВ', reservationTitle: 'Ваши данные', reservationText: 'В полной версии сотрудники получат заявку и подтвердят наличие, оплату и доставку.', nameLabel: 'Имя', phoneLabel: 'Телефон', deliveryMethod: 'Способ получения', commentLabel: 'Комментарий', demoWarning: 'Демонстрация: данные никуда не отправляются, оплата не списывается.', sendRequest: 'Отправить тестовую заявку', pickup: 'Самовывоз в Новельде', spain: 'Доставка по Испании', local: 'Местная доставка крупного товара', eu: 'Доставка по Евросоюзу', requestSent: 'Тестовая заявка успешно создана',
+    successEyebrow: 'ЗАЯВКА СОЗДАНА', successTitle: 'Резерв принят!', successText: 'Заказ уже появился в панели владельца.', orderNumber: 'Номер заявки', continueShopping: 'Продолжить покупки', openAdminDemo: 'Открыть демо-панель', successNote: 'Откройте панель в этом же браузере, чтобы увидеть заказ.',
     condition: 'Состояние', stock: 'В наличии', category: 'Категория', warranty: 'Гарантия', warrantyValue: 'Уточняется для каждого товара'
   }
 };
@@ -281,6 +284,17 @@ function createDemoOrder(form) {
   return order;
 }
 
+function showCheckoutForm() {
+  $('#checkoutFormView').hidden = false;
+  $('#checkoutSuccess').hidden = true;
+}
+
+function showCheckoutSuccess(order) {
+  $('#successOrderId').textContent = order.id;
+  $('#checkoutFormView').hidden = true;
+  $('#checkoutSuccess').hidden = false;
+}
+
 function openProduct(id) {
   const product = products.find((item) => item.id === id);
   if (!product) return;
@@ -314,8 +328,9 @@ $('#cartTrigger').addEventListener('click', openCart);
 $('#cartClose').addEventListener('click', closeCart);
 $('#overlay').addEventListener('click', closeCart);
 $('#productModalClose').addEventListener('click', () => $('#productModal').close());
-$('#checkoutButton').addEventListener('click', () => { if (!cartQuantity()) return; closeCart(); $('#checkoutModal').showModal(); });
+$('#checkoutButton').addEventListener('click', () => { if (!cartQuantity()) return; closeCart(); showCheckoutForm(); $('#checkoutModal').showModal(); });
 $('#checkoutClose').addEventListener('click', () => $('#checkoutModal').close());
+$('#continueShopping').addEventListener('click', () => $('#checkoutModal').close());
 $('#checkoutForm').addEventListener('submit', (event) => {
   event.preventDefault();
   const order = createDemoOrder(event.currentTarget);
@@ -325,12 +340,11 @@ $('#checkoutForm').addEventListener('submit', (event) => {
     showToast(t('cartEmptyTitle'));
     return;
   }
-  $('#checkoutModal').close();
   state.cart = {};
   saveCart();
   renderCart();
   event.currentTarget.reset();
-  showToast(`${t('requestSent')} · ${order.id}`);
+  showCheckoutSuccess(order);
 });
 $('#menuTrigger').addEventListener('click', () => { const open = $('#mobileNav').classList.toggle('open'); $('#menuTrigger').setAttribute('aria-expanded', String(open)); });
 $$('#mobileNav a').forEach((link) => link.addEventListener('click', () => { $('#mobileNav').classList.remove('open'); $('#menuTrigger').setAttribute('aria-expanded', 'false'); }));

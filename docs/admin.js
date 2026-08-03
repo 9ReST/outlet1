@@ -3,6 +3,7 @@ const ADMIN_PASSWORD = 'outlet2026';
 const PRODUCT_STORAGE_KEY = 'isgroup-demo-products';
 const STAFF_STORAGE_KEY = 'isgroup-demo-staff';
 const ORDER_STORAGE_KEY = 'isgroup-demo-orders';
+const CART_STORAGE_KEY = 'isgroup-demo-cart';
 
 const defaultProducts = [
   { id: 'samsung-qled-55', sku: 'IS-TV-001', brand: 'Samsung', category: 'tv', price: 449.5, oldPrice: 899, stock: 2, status: 'published', emoji: '📺', image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=900&q=82', title: { es: 'Televisor Samsung QLED 55”', en: 'Samsung QLED 55” TV', ru: 'Телевизор Samsung QLED 55”' }, description: { es: 'Televisor 4K de exposición, revisado y listo para disfrutar.', en: 'Inspected 4K display model, ready to enjoy.', ru: 'Проверенный выставочный телевизор 4K, готовый к использованию.' }, condition: { es: 'Exposición', en: 'Display model', ru: 'Витринный' } },
@@ -328,6 +329,16 @@ $('#loginForm').addEventListener('submit', (event) => {
 });
 
 $('#logoutButton').addEventListener('click', () => { sessionStorage.removeItem('isgroup-demo-admin-session'); showLogin(); });
+$('#resetPresentationDemo').addEventListener('click', () => {
+  if (!window.confirm('Подготовить сайт к новому показу? Тестовые заказы, корзина и локальные изменения товаров и сотрудников будут удалены.')) return;
+  [PRODUCT_STORAGE_KEY, STAFF_STORAGE_KEY, ORDER_STORAGE_KEY, CART_STORAGE_KEY].forEach((key) => localStorage.removeItem(key));
+  products = clone(defaultProducts);
+  staff = clone(defaultStaff);
+  storefrontOrders = [];
+  renderAll();
+  showSection('overview');
+  showToast('Демо подготовлено к новому показу');
+});
 $('#adminProductSearch').addEventListener('input', renderProducts);
 $('#adminProductStatus').addEventListener('change', renderProducts);
 $('#addProductButton').addEventListener('click', () => openProductEditor());
