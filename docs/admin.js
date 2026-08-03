@@ -4,14 +4,25 @@ const PRODUCT_STORAGE_KEY = 'isgroup-demo-products';
 const STAFF_STORAGE_KEY = 'isgroup-demo-staff';
 const ORDER_STORAGE_KEY = 'isgroup-demo-orders';
 const CART_STORAGE_KEY = 'isgroup-demo-cart';
+const CATEGORY_STORAGE_KEY = 'isgroup-demo-categories';
+const ORDER_STATUS_STORAGE_KEY = 'isgroup-demo-order-statuses';
+const SKU_COUNTER_STORAGE_KEY = 'isgroup-demo-sku-counter';
+
+const defaultCategories = [
+  { id: 'tv', name: { es: 'Televisores', en: 'TVs', ru: 'Телевизоры' } },
+  { id: 'coffee', name: { es: 'Café', en: 'Coffee', ru: 'Кофе' } },
+  { id: 'cleaning', name: { es: 'Limpieza', en: 'Cleaning', ru: 'Уборка' } },
+  { id: 'kitchen', name: { es: 'Cocina', en: 'Kitchen', ru: 'Кухня' } },
+  { id: 'large', name: { es: 'Gran electrodoméstico', en: 'Large appliances', ru: 'Крупная техника' } }
+];
 
 const defaultProducts = [
-  { id: 'samsung-qled-55', sku: 'IS-TV-001', brand: 'Samsung', category: 'tv', price: 449.5, oldPrice: 899, stock: 2, status: 'published', emoji: '📺', image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=900&q=82', title: { es: 'Televisor Samsung QLED 55”', en: 'Samsung QLED 55” TV', ru: 'Телевизор Samsung QLED 55”' }, description: { es: 'Televisor 4K de exposición, revisado y listo para disfrutar.', en: 'Inspected 4K display model, ready to enjoy.', ru: 'Проверенный выставочный телевизор 4K, готовый к использованию.' }, condition: { es: 'Exposición', en: 'Display model', ru: 'Витринный' } },
-  { id: 'delonghi-magnifica', sku: 'IS-CF-002', brand: 'De’Longhi', category: 'coffee', price: 249.5, oldPrice: 499, stock: 3, status: 'published', emoji: '☕', image: 'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?auto=format&fit=crop&w=900&q=82', title: { es: 'Cafetera Magnifica Start', en: 'Magnifica Start coffee machine', ru: 'Кофемашина Magnifica Start' }, description: { es: 'Café recién molido con controles sencillos y vaporizador manual.', en: 'Freshly ground coffee with simple controls and a manual frother.', ru: 'Свежемолотый кофе, простое управление и ручной капучинатор.' }, condition: { es: 'Nuevo', en: 'New', ru: 'Новый' } },
-  { id: 'bosch-unlimited-7', sku: 'IS-CL-003', brand: 'Bosch', category: 'cleaning', price: 224.5, oldPrice: 449, stock: 4, status: 'published', emoji: '🧹', image: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=900&q=82', title: { es: 'Aspirador Bosch Unlimited 7', en: 'Bosch Unlimited 7 vacuum', ru: 'Пылесос Bosch Unlimited 7' }, description: { es: 'Aspirador sin cable, flexible y potente para la limpieza diaria.', en: 'Flexible and powerful cordless vacuum for daily cleaning.', ru: 'Гибкий и мощный беспроводной пылесос для ежедневной уборки.' }, condition: { es: 'Caja abierta', en: 'Open box', ru: 'Открытая упаковка' } },
-  { id: 'cecotec-dual', sku: 'IS-KT-004', brand: 'Cecotec', category: 'kitchen', price: 74.5, oldPrice: 149, stock: 5, status: 'published', emoji: '🍟', image: 'https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=900&q=82', title: { es: 'Freidora de aire Cecofry Dual', en: 'Cecofry Dual air fryer', ru: 'Аэрогриль Cecofry Dual' }, description: { es: 'Dos cubetas independientes para preparar platos distintos a la vez.', en: 'Two independent baskets to cook different dishes at once.', ru: 'Две независимые чаши для одновременного приготовления разных блюд.' }, condition: { es: 'Nuevo', en: 'New', ru: 'Новый' } },
-  { id: 'lg-washer', sku: 'IS-LA-005', brand: 'LG', category: 'large', price: 299.5, oldPrice: 599, stock: 2, status: 'published', emoji: '🫧', image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=900&q=82', title: { es: 'Lavadora LG 8 kg AI DD', en: 'LG 8 kg AI DD washer', ru: 'Стиральная машина LG 8 кг AI DD' }, description: { es: 'Lavado inteligente de bajo consumo con capacidad para toda la familia.', en: 'Energy-efficient smart washing with room for the whole family.', ru: 'Экономичная умная стирка и загрузка для всей семьи.' }, condition: { es: 'Exposición', en: 'Display model', ru: 'Витринный' } },
-  { id: 'philips-lattego', sku: 'IS-CF-006', brand: 'Philips', category: 'coffee', price: 274.5, oldPrice: 549, stock: 1, status: 'draft', emoji: '🥛', image: 'https://images.unsplash.com/photo-1579992357154-faf4bde95b3d?auto=format&fit=crop&w=900&q=82', title: { es: 'Philips LatteGo Serie 3200', en: 'Philips LatteGo Series 3200', ru: 'Кофемашина Philips LatteGo 3200' }, description: { es: 'Café y espuma de leche suave con un sistema fácil de limpiar.', en: 'Coffee and silky milk foam with an easy-clean system.', ru: 'Кофе и нежная молочная пенка, система легко очищается.' }, condition: { es: 'Caja abierta', en: 'Open box', ru: 'Открытая упаковка' } }
+  { id: 'samsung-qled-55', sku: 'IS-TV-001', brand: 'Samsung', category: 'tv', price: 449.5, oldPrice: 899, stock: 2, status: 'published', image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=900&q=82', title: { es: 'Televisor Samsung QLED 55”', en: 'Samsung QLED 55” TV', ru: 'Телевизор Samsung QLED 55”' }, description: { es: 'Televisor 4K de exposición, revisado y listo para disfrutar.', en: 'Inspected 4K display model, ready to enjoy.', ru: 'Проверенный выставочный телевизор 4K, готовый к использованию.' } },
+  { id: 'delonghi-magnifica', sku: 'IS-CF-002', brand: 'De’Longhi', category: 'coffee', price: 249.5, oldPrice: 499, stock: 3, status: 'published', image: 'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?auto=format&fit=crop&w=900&q=82', title: { es: 'Cafetera Magnifica Start', en: 'Magnifica Start coffee machine', ru: 'Кофемашина Magnifica Start' }, description: { es: 'Café recién molido con controles sencillos y vaporizador manual.', en: 'Freshly ground coffee with simple controls and a manual frother.', ru: 'Свежемолотый кофе, простое управление и ручной капучинатор.' } },
+  { id: 'bosch-unlimited-7', sku: 'IS-CL-003', brand: 'Bosch', category: 'cleaning', price: 224.5, oldPrice: 449, stock: 4, status: 'published', image: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=900&q=82', title: { es: 'Aspirador Bosch Unlimited 7', en: 'Bosch Unlimited 7 vacuum', ru: 'Пылесос Bosch Unlimited 7' }, description: { es: 'Aspirador sin cable, flexible y potente para la limpieza diaria.', en: 'Flexible and powerful cordless vacuum for daily cleaning.', ru: 'Гибкий и мощный беспроводной пылесос для ежедневной уборки.' } },
+  { id: 'cecotec-dual', sku: 'IS-KT-004', brand: 'Cecotec', category: 'kitchen', price: 74.5, oldPrice: 149, stock: 5, status: 'published', image: 'https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=900&q=82', title: { es: 'Freidora de aire Cecofry Dual', en: 'Cecofry Dual air fryer', ru: 'Аэрогриль Cecofry Dual' }, description: { es: 'Dos cubetas independientes para preparar platos distintos a la vez.', en: 'Two independent baskets to cook different dishes at once.', ru: 'Две независимые чаши для одновременного приготовления разных блюд.' } },
+  { id: 'lg-washer', sku: 'IS-LA-005', brand: 'LG', category: 'large', price: 299.5, oldPrice: 599, stock: 2, status: 'published', image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=900&q=82', title: { es: 'Lavadora LG 8 kg AI DD', en: 'LG 8 kg AI DD washer', ru: 'Стиральная машина LG 8 кг AI DD' }, description: { es: 'Lavado inteligente de bajo consumo con capacidad para toda la familia.', en: 'Energy-efficient smart washing with room for the whole family.', ru: 'Экономичная умная стирка и загрузка для всей семьи.' } },
+  { id: 'philips-lattego', sku: 'IS-CF-006', brand: 'Philips', category: 'coffee', price: 274.5, oldPrice: 549, stock: 1, status: 'draft', image: 'https://images.unsplash.com/photo-1579992357154-faf4bde95b3d?auto=format&fit=crop&w=900&q=82', title: { es: 'Philips LatteGo Serie 3200', en: 'Philips LatteGo Series 3200', ru: 'Кофемашина Philips LatteGo 3200' }, description: { es: 'Café y espuma de leche suave con un sistema fácil de limpiar.', en: 'Coffee and silky milk foam with an easy-clean system.', ru: 'Кофе и нежная молочная пенка, система легко очищается.' } }
 ];
 
 const demoOrders = [
@@ -30,8 +41,7 @@ const defaultStaff = [
 
 const roleLabels = { owner: 'Владелец', manager: 'Менеджер каталога', orders: 'Менеджер заказов', pickup: 'Выдача заказов' };
 const rolePermissions = { owner: 'Полный доступ', manager: 'Товары и остатки', orders: 'Заказы без финансов', pickup: 'Подготовка и выдача' };
-const categoryLabels = { tv: 'Телевизоры', coffee: 'Кофе', cleaning: 'Уборка', kitchen: 'Кухня', large: 'Крупная техника' };
-const orderStatusLabels = { new: 'Новая заявка', processing: 'Готовится', ready: 'Готов к выдаче', shipped: 'Передан в доставку' };
+const orderStatusLabels = { new: 'Новая заявка', processing: 'Готовится', ready: 'Готов к выдаче', shipped: 'Передан в доставку', completed: 'Завершён' };
 const deliveryLabels = { pickup: 'Самовывоз в Новельде', spain: 'Доставка по Испании', local: 'Местная доставка', eu: 'Доставка по ЕС' };
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -55,14 +65,41 @@ function loadList(key, fallback) {
   }
 }
 
+function loadObject(key, fallback = {}) {
+  try {
+    const stored = JSON.parse(localStorage.getItem(key) || 'null');
+    return stored && typeof stored === 'object' && !Array.isArray(stored) ? stored : clone(fallback);
+  } catch {
+    return clone(fallback);
+  }
+}
+
 let products = loadList(PRODUCT_STORAGE_KEY, defaultProducts).map((product) => ({ ...product, status: product.status || 'published' }));
 let staff = loadList(STAFF_STORAGE_KEY, defaultStaff);
 let storefrontOrders = loadList(ORDER_STORAGE_KEY, []);
+let categories = loadList(CATEGORY_STORAGE_KEY, defaultCategories);
+let orderStatusOverrides = loadObject(ORDER_STATUS_STORAGE_KEY);
 let toastTimer;
 
 function getAllOrders() {
   const recentStorefrontOrders = [...storefrontOrders].sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
-  return [...recentStorefrontOrders, ...demoOrders];
+  return [...recentStorefrontOrders, ...demoOrders].map((order) => ({ ...order, status: orderStatusOverrides[order.id] || order.status }));
+}
+
+function categoryLabel(categoryId, language = 'ru') {
+  const category = categories.find((item) => item.id === categoryId);
+  return category?.name?.[language] || category?.name?.es || categoryId;
+}
+
+function generateSku() {
+  const storedCounter = Number(localStorage.getItem(SKU_COUNTER_STORAGE_KEY) || 0);
+  const productCounter = products.reduce((max, product) => {
+    const match = String(product.sku || '').match(/(\d+)$/);
+    return Math.max(max, Number(match?.[1] || 0));
+  }, 0);
+  const next = Math.max(storedCounter, productCounter) + 1;
+  localStorage.setItem(SKU_COUNTER_STORAGE_KEY, String(next));
+  return `IS-${String(next).padStart(4, '0')}`;
 }
 
 function orderDelivery(order) {
@@ -95,6 +132,18 @@ function saveStaff(message = 'Данные сотрудника сохранен
   showToast(message);
 }
 
+function saveCategories(message = 'Категория сохранена') {
+  localStorage.setItem(CATEGORY_STORAGE_KEY, JSON.stringify(categories));
+  renderAll();
+  showToast(message);
+}
+
+function saveOrderStatuses(message = 'Статус заказа обновлён') {
+  localStorage.setItem(ORDER_STATUS_STORAGE_KEY, JSON.stringify(orderStatusOverrides));
+  renderAll();
+  showToast(message);
+}
+
 function showToast(message) {
   clearTimeout(toastTimer);
   $('#adminToast').textContent = message;
@@ -104,7 +153,7 @@ function showToast(message) {
 
 function productImage(product, className) {
   const url = safeImageUrl(product.image);
-  return `<div class="${className}"><span>${escapeHtml(product.emoji || '📦')}</span>${url ? `<img src="${escapeHtml(url)}" alt="" onerror="this.remove()">` : ''}</div>`;
+  return `<div class="${className}"><span>ФОТО</span>${url ? `<img src="${escapeHtml(url)}" alt="" onerror="this.remove()">` : ''}</div>`;
 }
 
 function showAdmin() {
@@ -121,6 +170,7 @@ function showLogin() {
 const sectionMeta = {
   overview: ['ОБЗОР МАГАЗИНА', 'Добрый вечер, владелец'],
   products: ['КАТАЛОГ И ОСТАТКИ', 'Управление товарами'],
+  categories: ['СТРУКТУРА КАТАЛОГА', 'Категории товаров'],
   orders: ['ЗАКАЗЫ И ВЫДАЧА', 'Контроль заказов'],
   team: ['ДОСТУП И РОЛИ', 'Сотрудники']
 };
@@ -136,9 +186,11 @@ function showSection(name) {
 function renderAll() {
   renderOverview();
   renderProducts();
+  renderCategories();
   renderOrders();
   renderStaff();
   $('#sidebarProductCount').textContent = products.length;
+  $('#sidebarCategoryCount').textContent = categories.length;
   $('#sidebarOrderCount').textContent = getAllOrders().length;
   $('#sidebarStaffCount').textContent = staff.length;
 }
@@ -157,13 +209,74 @@ function renderOverview() {
 function orderRow(order, detailed = false) {
   const status = orderStatusLabels[order.status] || orderStatusLabels.processing;
   if (detailed) {
-    return `<tr><td><strong>${escapeHtml(order.id)}</strong></td><td>${escapeHtml(order.date)}</td><td><strong>${escapeHtml(order.customer)}</strong><small>${escapeHtml(order.contact)}</small></td><td>${escapeHtml(order.product)}</td><td><strong>${money(order.total)}</strong></td><td>${paymentChip(order)}</td><td>${escapeHtml(orderDelivery(order))}</td><td><span class="status-chip ${escapeHtml(order.status || 'processing')}">${escapeHtml(status)}</span></td></tr>`;
+    const options = Object.entries(orderStatusLabels).map(([value, label]) => `<option value="${value}" ${value === order.status ? 'selected' : ''}>${escapeHtml(label)}</option>`).join('');
+    return `<tr><td><strong>${escapeHtml(order.id)}</strong></td><td>${escapeHtml(order.date)}</td><td><strong>${escapeHtml(order.customer)}</strong><small>${escapeHtml(order.contact)}</small></td><td>${escapeHtml(order.product)}</td><td><strong>${money(order.total)}</strong></td><td>${paymentChip(order)}</td><td>${escapeHtml(orderDelivery(order))}</td><td><select class="order-status-select ${escapeHtml(order.status || 'processing')}" data-order-status="${escapeHtml(order.id)}" aria-label="Статус заказа ${escapeHtml(order.id)}">${options}</select></td></tr>`;
   }
   return `<tr><td><strong>${escapeHtml(order.id)}</strong><small>${escapeHtml(order.date)}</small></td><td><strong>${escapeHtml(order.customer)}</strong><small>${escapeHtml(order.contact)}</small></td><td>${escapeHtml(orderDelivery(order))}</td><td><strong>${money(order.total)}</strong></td><td>${paymentChip(order)}</td><td><span class="status-chip ${escapeHtml(order.status || 'processing')}">${escapeHtml(status)}</span></td></tr>`;
 }
 
 function renderOrders() {
   $('#ordersBody').innerHTML = getAllOrders().map((order) => orderRow(order, true)).join('');
+}
+
+function renderCategories() {
+  $('#categoryList').innerHTML = categories.map((category) => {
+    const productCount = products.filter((product) => product.category === category.id).length;
+    return `<article class="category-card">
+      <div class="category-card-heading"><div><span>Код категории</span><strong>${escapeHtml(category.id)}</strong></div><b>${productCount} ${productCount === 1 ? 'товар' : 'товаров'}</b></div>
+      <div class="category-language-list"><span><small>RU</small><strong>${escapeHtml(category.name?.ru || category.name?.es)}</strong></span><span><small>ES</small><strong>${escapeHtml(category.name?.es)}</strong></span><span><small>EN</small><strong>${escapeHtml(category.name?.en || category.name?.es)}</strong></span></div>
+      <div class="category-actions"><button class="small-button" type="button" data-edit-category="${escapeHtml(category.id)}">Изменить</button><button class="small-button delete" type="button" data-delete-category="${escapeHtml(category.id)}" aria-label="Удалить категорию">×</button></div>
+    </article>`;
+  }).join('');
+}
+
+function categoryIdFromName(name) {
+  const base = String(name || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || `category-${Date.now().toString(36)}`;
+  let candidate = base;
+  let suffix = 2;
+  while (categories.some((category) => category.id === candidate)) candidate = `${base}-${suffix++}`;
+  return candidate;
+}
+
+function openCategoryEditor(id = null) {
+  const form = $('#categoryForm');
+  form.reset();
+  const category = id ? categories.find((item) => item.id === id) : null;
+  $('#categoryEditorTitle').textContent = category ? 'Изменить категорию' : 'Новая категория';
+  form.elements.id.value = category?.id || '';
+  form.elements.nameEs.value = category?.name?.es || '';
+  form.elements.nameEn.value = category?.name?.en || '';
+  form.elements.nameRu.value = category?.name?.ru || '';
+  $('#categoryEditor').showModal();
+}
+
+function closeCategoryEditor() {
+  if ($('#categoryEditor').open) $('#categoryEditor').close();
+}
+
+function saveCategoryFromForm(event) {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  const existingId = String(data.get('id') || '');
+  const nameEs = String(data.get('nameEs') || '').trim();
+  const category = {
+    id: existingId || categoryIdFromName(nameEs),
+    name: {
+      es: nameEs,
+      en: String(data.get('nameEn') || '').trim() || nameEs,
+      ru: String(data.get('nameRu') || '').trim() || nameEs
+    }
+  };
+  const index = categories.findIndex((item) => item.id === existingId);
+  if (index >= 0) categories[index] = category; else categories.push(category);
+  closeCategoryEditor();
+  saveCategories(existingId ? 'Категория обновлена' : 'Новая категория добавлена');
+}
+
+function fillProductCategoryOptions(selectedId) {
+  const select = $('#productCategorySelect');
+  select.innerHTML = categories.map((category) => `<option value="${escapeHtml(category.id)}">${escapeHtml(categoryLabel(category.id))}</option>`).join('');
+  select.value = categories.some((category) => category.id === selectedId) ? selectedId : categories[0]?.id || '';
 }
 
 function renderProducts() {
@@ -176,7 +289,7 @@ function renderProducts() {
   $('#adminProductEmpty').hidden = list.length > 0;
   $('#adminProductList').hidden = list.length === 0;
   $('#adminProductList').innerHTML = list.map((product) => `<article class="admin-product-row">
-    <div class="admin-product-main">${productImage(product, 'admin-product-image')}<div><h3>${escapeHtml(product.title.ru || product.title.es)}</h3><p>${escapeHtml(product.brand)} · ${escapeHtml(categoryLabels[product.category] || product.category)} · ${escapeHtml(product.sku || 'Без артикула')}</p></div></div>
+    <div class="admin-product-main">${productImage(product, 'admin-product-image')}<div><h3>${escapeHtml(product.title.ru || product.title.es)}</h3><p>${escapeHtml(product.brand)} · ${escapeHtml(categoryLabel(product.category))} · ${escapeHtml(product.sku || 'Без артикула')}</p></div></div>
     <div class="admin-product-cell"><span>Цена</span><strong>${money(product.price)}</strong></div>
     <div class="admin-product-cell"><span>Остаток</span><strong>${Number(product.stock)} шт.</strong></div>
     <div class="admin-product-cell"><span>Старая цена</span><strong>${money(product.oldPrice)}</strong></div>
@@ -185,9 +298,9 @@ function renderProducts() {
   </article>`).join('');
 }
 
-function fillProductPreview(url, emoji = '📦') {
+function fillProductPreview(url) {
   const safe = safeImageUrl(url);
-  $('#adminImagePreview').innerHTML = safe ? `<img src="${escapeHtml(safe)}" alt="Предпросмотр" onerror="this.parentElement.innerHTML='<b>ФОТО</b>'">` : `<b>${escapeHtml(emoji || 'ФОТО')}</b>`;
+  $('#adminImagePreview').innerHTML = safe ? `<img src="${escapeHtml(safe)}" alt="Предпросмотр" onerror="this.parentElement.innerHTML='<b>ФОТО</b>'">` : '<b>ФОТО</b>';
 }
 
 function openProductEditor(id = null) {
@@ -200,21 +313,19 @@ function openProductEditor(id = null) {
   form.elements.titleEn.value = product?.title.en || '';
   form.elements.titleRu.value = product?.title.ru || '';
   form.elements.brand.value = product?.brand || '';
-  form.elements.category.value = product?.category || 'large';
-  form.elements.sku.value = product?.sku || `IS-${String(products.length + 1).padStart(4, '0')}`;
+  fillProductCategoryOptions(product?.category || categories[0]?.id);
+  $('#autoSkuPreview').textContent = product?.sku || 'Будет присвоен при сохранении';
   form.elements.price.value = product?.price ?? '';
   form.elements.oldPrice.value = product?.oldPrice ?? '';
   form.elements.stock.value = product?.stock ?? 1;
   form.elements.status.value = product?.status || 'published';
-  form.elements.condition.value = product?.condition?.ru || product?.condition?.es || 'Новый';
-  form.elements.emoji.value = product?.emoji || '📦';
   form.elements.descriptionEs.value = product?.description.es || '';
   form.elements.descriptionEn.value = product?.description.en || '';
   form.elements.descriptionRu.value = product?.description.ru || '';
   form.elements.imageUrl.value = /^https:\/\//i.test(product?.image || '') ? product.image : '';
   form.elements.imageData.value = product?.image || '';
   $('#productImageFile').value = '';
-  fillProductPreview(product?.image, product?.emoji);
+  fillProductPreview(product?.image);
   $('#productEditor').showModal();
   document.body.classList.add('locked');
 }
@@ -229,25 +340,23 @@ function saveProductFromForm(event) {
   const form = event.currentTarget;
   const formData = new FormData(form);
   const existingId = formData.get('id');
+  const existingProduct = products.find((item) => item.id === existingId);
   const titleEs = String(formData.get('titleEs')).trim();
   const titleEn = String(formData.get('titleEn')).trim() || titleEs;
   const titleRu = String(formData.get('titleRu')).trim() || titleEs;
-  const condition = String(formData.get('condition')).trim() || 'Новый';
   const image = String(formData.get('imageData')).trim() || String(formData.get('imageUrl')).trim();
   const product = {
     id: existingId || `product-${Date.now()}`,
-    sku: String(formData.get('sku')).trim(),
+    sku: existingProduct?.sku || generateSku(),
     brand: String(formData.get('brand')).trim(),
     category: String(formData.get('category')),
     price: Number(formData.get('price')),
     oldPrice: Number(formData.get('oldPrice')) || Number(formData.get('price')),
     stock: Number(formData.get('stock')),
     status: String(formData.get('status')),
-    emoji: String(formData.get('emoji')).trim() || '📦',
     image: safeImageUrl(image),
     title: { es: titleEs, en: titleEn, ru: titleRu },
-    description: { es: String(formData.get('descriptionEs')).trim(), en: String(formData.get('descriptionEn')).trim() || String(formData.get('descriptionEs')).trim(), ru: String(formData.get('descriptionRu')).trim() || String(formData.get('descriptionEs')).trim() },
-    condition: { es: condition, en: condition, ru: condition }
+    description: { es: String(formData.get('descriptionEs')).trim(), en: String(formData.get('descriptionEn')).trim() || String(formData.get('descriptionEs')).trim(), ru: String(formData.get('descriptionRu')).trim() || String(formData.get('descriptionEs')).trim() }
   };
   const index = products.findIndex((item) => item.id === existingId);
   if (index >= 0) products[index] = product; else products.unshift(product);
@@ -285,16 +394,6 @@ function saveStaffFromForm(event) {
   saveStaff(id ? 'Данные сотрудника обновлены' : 'Демо-сотрудник добавлен');
 }
 
-function exportProducts() {
-  const blob = new Blob([JSON.stringify(products, null, 2)], { type: 'application/json' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'isgroup-products-demo.json';
-  link.click();
-  URL.revokeObjectURL(link.href);
-  showToast('Каталог экспортирован в JSON');
-}
-
 function exportOrders() {
   const columns = ['Заказ', 'Дата', 'Клиент', 'Телефон', 'Товар', 'Сумма EUR', 'Оплата', 'Получение', 'Статус'];
   const rows = getAllOrders().map((order) => [
@@ -330,11 +429,13 @@ $('#loginForm').addEventListener('submit', (event) => {
 
 $('#logoutButton').addEventListener('click', () => { sessionStorage.removeItem('isgroup-demo-admin-session'); showLogin(); });
 $('#resetPresentationDemo').addEventListener('click', () => {
-  if (!window.confirm('Подготовить сайт к новому показу? Тестовые заказы, корзина и локальные изменения товаров и сотрудников будут удалены.')) return;
-  [PRODUCT_STORAGE_KEY, STAFF_STORAGE_KEY, ORDER_STORAGE_KEY, CART_STORAGE_KEY].forEach((key) => localStorage.removeItem(key));
+  if (!window.confirm('Подготовить сайт к новому показу? Тестовые заказы, корзина и локальные изменения товаров, категорий и сотрудников будут удалены.')) return;
+  [PRODUCT_STORAGE_KEY, STAFF_STORAGE_KEY, ORDER_STORAGE_KEY, CART_STORAGE_KEY, CATEGORY_STORAGE_KEY, ORDER_STATUS_STORAGE_KEY, SKU_COUNTER_STORAGE_KEY].forEach((key) => localStorage.removeItem(key));
   products = clone(defaultProducts);
+  categories = clone(defaultCategories);
   staff = clone(defaultStaff);
   storefrontOrders = [];
+  orderStatusOverrides = {};
   renderAll();
   showSection('overview');
   showToast('Демо подготовлено к новому показу');
@@ -345,8 +446,11 @@ $('#addProductButton').addEventListener('click', () => openProductEditor());
 $('#closeProductEditor').addEventListener('click', closeProductEditor);
 $('#cancelProductEditor').addEventListener('click', closeProductEditor);
 $('#productForm').addEventListener('submit', saveProductFromForm);
-$('#exportProducts').addEventListener('click', exportProducts);
 $('#exportOrders').addEventListener('click', exportOrders);
+$('#addCategoryButton').addEventListener('click', () => openCategoryEditor());
+$('#closeCategoryEditor').addEventListener('click', closeCategoryEditor);
+$('#cancelCategoryEditor').addEventListener('click', closeCategoryEditor);
+$('#categoryForm').addEventListener('submit', saveCategoryFromForm);
 $('#addStaffButton').addEventListener('click', () => openStaffEditor());
 $('#closeStaffEditor').addEventListener('click', closeStaffEditor);
 $('#cancelStaffEditor').addEventListener('click', closeStaffEditor);
@@ -357,17 +461,17 @@ $('#productImageFile').addEventListener('change', (event) => {
   if (!file) return;
   if (file.size > 1_500_000) { event.target.value = ''; showToast('Для демо выберите изображение меньше 1,5 МБ'); return; }
   const reader = new FileReader();
-  reader.addEventListener('load', () => { $('#productForm').elements.imageData.value = reader.result; $('#productForm').elements.imageUrl.value = ''; fillProductPreview(reader.result, $('#productForm').elements.emoji.value); });
+  reader.addEventListener('load', () => { $('#productForm').elements.imageData.value = reader.result; $('#productForm').elements.imageUrl.value = ''; fillProductPreview(reader.result); });
   reader.readAsDataURL(file);
 });
 
-$('#productForm').elements.imageUrl.addEventListener('input', (event) => { $('#productForm').elements.imageData.value = event.target.value; fillProductPreview(event.target.value, $('#productForm').elements.emoji.value); });
-$('#productForm').elements.emoji.addEventListener('input', (event) => { if (!$('#productForm').elements.imageData.value) fillProductPreview('', event.target.value); });
+$('#productForm').elements.imageUrl.addEventListener('input', (event) => { $('#productForm').elements.imageData.value = event.target.value; fillProductPreview(event.target.value); });
 
 $('#resetDemoProducts').addEventListener('click', () => {
   if (!window.confirm('Вернуть исходный демонстрационный каталог? Все локальные изменения товаров будут удалены.')) return;
   products = clone(defaultProducts);
   localStorage.removeItem(PRODUCT_STORAGE_KEY);
+  localStorage.removeItem(SKU_COUNTER_STORAGE_KEY);
   renderAll();
   showToast('Демонстрационный каталог восстановлен');
 });
@@ -386,21 +490,39 @@ document.addEventListener('click', (event) => {
   }
   const deleteProduct = event.target.closest('[data-delete-product]');
   if (deleteProduct && window.confirm('Удалить эту демонстрационную карточку товара?')) { products = products.filter((item) => item.id !== deleteProduct.dataset.deleteProduct); saveProducts('Карточка товара удалена'); }
+  const editCategory = event.target.closest('[data-edit-category]');
+  if (editCategory) openCategoryEditor(editCategory.dataset.editCategory);
+  const deleteCategory = event.target.closest('[data-delete-category]');
+  if (deleteCategory) {
+    const categoryId = deleteCategory.dataset.deleteCategory;
+    const linkedProducts = products.filter((product) => product.category === categoryId).length;
+    if (linkedProducts) showToast(`Сначала перенесите ${linkedProducts} товар(ов) в другую категорию`);
+    else if (window.confirm('Удалить эту категорию?')) { categories = categories.filter((category) => category.id !== categoryId); saveCategories('Категория удалена'); }
+  }
   const editStaff = event.target.closest('[data-edit-staff]');
   if (editStaff) openStaffEditor(editStaff.dataset.editStaff);
   const deleteStaff = event.target.closest('[data-delete-staff]');
   if (deleteStaff && window.confirm('Удалить демонстрационного сотрудника?')) { staff = staff.filter((item) => item.id !== deleteStaff.dataset.deleteStaff); saveStaff('Сотрудник удалён'); }
 });
 
+document.addEventListener('change', (event) => {
+  const statusSelect = event.target.closest('[data-order-status]');
+  if (!statusSelect) return;
+  orderStatusOverrides[statusSelect.dataset.orderStatus] = statusSelect.value;
+  saveOrderStatuses(`Статус заказа ${statusSelect.dataset.orderStatus} обновлён`);
+});
+
 function reloadBrowserData() {
   products = loadList(PRODUCT_STORAGE_KEY, defaultProducts).map((product) => ({ ...product, status: product.status || 'published' }));
+  categories = loadList(CATEGORY_STORAGE_KEY, defaultCategories);
   staff = loadList(STAFF_STORAGE_KEY, defaultStaff);
   storefrontOrders = loadList(ORDER_STORAGE_KEY, []);
+  orderStatusOverrides = loadObject(ORDER_STATUS_STORAGE_KEY);
   if (!$('#adminApp').hidden) renderAll();
 }
 
 window.addEventListener('storage', (event) => {
-  if ([PRODUCT_STORAGE_KEY, STAFF_STORAGE_KEY, ORDER_STORAGE_KEY].includes(event.key)) reloadBrowserData();
+  if ([PRODUCT_STORAGE_KEY, STAFF_STORAGE_KEY, ORDER_STORAGE_KEY, CATEGORY_STORAGE_KEY, ORDER_STATUS_STORAGE_KEY].includes(event.key)) reloadBrowserData();
 });
 window.addEventListener('focus', reloadBrowserData);
 

@@ -47,6 +47,7 @@
         <nav class="admin-nav" aria-label="Разделы панели">
           <button class="active" type="button" data-admin-section="overview"><span>⌂</span><b>Обзор</b></button>
           <button type="button" data-admin-section="products"><span>▦</span><b>Товары</b><small id="sidebarProductCount">0</small></button>
+          <button type="button" data-admin-section="categories"><span>≡</span><b>Категории</b><small id="sidebarCategoryCount">0</small></button>
           <button type="button" data-admin-section="orders"><span>▤</span><b>Заказы</b><small id="sidebarOrderCount">0</small></button>
           <button type="button" data-admin-section="team"><span>◎</span><b>Сотрудники</b><small id="sidebarStaffCount">0</small></button>
         </nav>
@@ -101,7 +102,7 @@
         <section class="admin-section" id="section-products" hidden>
           <div class="section-actions-heading">
             <div><p>КАТАЛОГ И ОСТАТКИ</p><h2>Управление товарами</h2><span>Добавленные вручную товары по умолчанию сразу публикуются.</span></div>
-            <div class="action-group"><button class="secondary-button" id="exportProducts" type="button">Экспорт JSON</button><button class="primary-button" id="addProductButton" type="button">＋ Добавить товар</button></div>
+            <button class="primary-button" id="addProductButton" type="button">＋ Добавить товар</button>
           </div>
           <div class="toolbar">
             <label class="toolbar-search"><span>⌕</span><input id="adminProductSearch" type="search" placeholder="Название, бренд или артикул" /></label>
@@ -112,9 +113,17 @@
           <div class="admin-empty" id="adminProductEmpty" hidden><span>⌕</span><h3>Товары не найдены</h3><p>Измените поиск или статус.</p></div>
         </section>
 
+        <section class="admin-section" id="section-categories" hidden>
+          <div class="section-actions-heading">
+            <div><p>СТРУКТУРА КАТАЛОГА</p><h2>Категории товаров</h2><span>Название категории на витрине автоматически показывается на выбранном клиентом языке.</span></div>
+            <button class="primary-button" id="addCategoryButton" type="button">＋ Добавить категорию</button>
+          </div>
+          <div class="category-grid" id="categoryList"></div>
+        </section>
+
         <section class="admin-section" id="section-orders" hidden>
           <div class="section-actions-heading">
-            <div><p>КОНТРОЛЬ ЗАКАЗОВ</p><h2>Заказы и выдача</h2><span>Заявки с витрины появляются автоматически. Статус оплаты поступает от платёжного провайдера и не редактируется сотрудником.</span></div>
+            <div><p>КОНТРОЛЬ ЗАКАЗОВ</p><h2>Заказы и выдача</h2><span>Статус выполнения заказа можно менять вручную. Статус оплаты по-прежнему поступает только от платёжного провайдера.</span></div>
             <button class="secondary-button" id="exportOrders" type="button">Скачать отчёт CSV</button>
           </div>
           <div class="order-security-grid">
@@ -150,9 +159,9 @@
         <div class="editor-grid">
           <div class="editor-fields">
             <div class="field-row three"><label><span>Название ES *</span><input name="titleEs" required /></label><label><span>Название EN</span><input name="titleEn" /></label><label><span>Название RU</span><input name="titleRu" /></label></div>
-            <div class="field-row three"><label><span>Бренд *</span><input name="brand" required /></label><label><span>Категория</span><select name="category"><option value="tv">Телевизоры</option><option value="coffee">Кофе</option><option value="cleaning">Уборка</option><option value="kitchen">Кухня</option><option value="large">Крупная техника</option></select></label><label><span>Артикул</span><input name="sku" placeholder="IS-0001" /></label></div>
+            <div class="field-row two"><label><span>Бренд *</span><input name="brand" required /></label><label><span>Категория</span><select name="category" id="productCategorySelect"></select></label></div>
+            <div class="auto-sku-note"><span>Артикул создаётся автоматически</span><strong id="autoSkuPreview">Будет присвоен при сохранении</strong></div>
             <div class="field-row four"><label><span>Цена, € *</span><input name="price" type="number" min="0" step="0.01" required /></label><label><span>Старая цена, €</span><input name="oldPrice" type="number" min="0" step="0.01" /></label><label><span>Остаток *</span><input name="stock" type="number" min="0" step="1" required /></label><label><span>Статус</span><select name="status"><option value="published">Сразу на витрину</option><option value="draft">Скрыть</option></select></label></div>
-            <div class="field-row two"><label><span>Состояние</span><input name="condition" placeholder="Новый / Витринный" /></label><label><span>Иконка</span><input name="emoji" maxlength="4" placeholder="📦" /></label></div>
             <label><span>Описание ES</span><textarea name="descriptionEs" rows="3"></textarea></label>
             <div class="field-row two"><label><span>Описание EN</span><textarea name="descriptionEn" rows="3"></textarea></label><label><span>Описание RU</span><textarea name="descriptionRu" rows="3"></textarea></label></div>
           </div>
@@ -165,6 +174,16 @@
           </aside>
         </div>
         <div class="dialog-footer"><p>Демонстрация: изменения увидит только этот браузер.</p><div><button class="secondary-button" id="cancelProductEditor" type="button">Отмена</button><button class="primary-button" type="submit">Сохранить товар</button></div></div>
+      </form>
+    </dialog>
+
+    <dialog class="staff-dialog category-dialog" id="categoryEditor">
+      <form id="categoryForm">
+        <div class="dialog-heading"><div><p>КАТЕГОРИЯ КАТАЛОГА</p><h2 id="categoryEditorTitle">Новая категория</h2></div><button class="dialog-close" id="closeCategoryEditor" type="button" aria-label="Закрыть">×</button></div>
+        <input type="hidden" name="id" />
+        <div class="category-form-grid"><label><span>Название ES *</span><input name="nameEs" required /></label><label><span>Название EN</span><input name="nameEn" /></label><label><span>Название RU</span><input name="nameRu" /></label></div>
+        <p class="staff-security-note">Технический код создаётся автоматически. Переименование категории не изменит привязанные товары.</p>
+        <div class="dialog-footer"><p>Изменения сразу появятся в фильтрах витрины.</p><div><button class="secondary-button" id="cancelCategoryEditor" type="button">Отмена</button><button class="primary-button" type="submit">Сохранить категорию</button></div></div>
       </form>
     </dialog>
 

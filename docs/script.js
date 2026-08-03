@@ -1,54 +1,69 @@
 const ORDER_STORAGE_KEY = 'isgroup-demo-orders';
+const CATEGORY_STORAGE_KEY = 'isgroup-demo-categories';
+const PRODUCT_STORAGE_KEY = 'isgroup-demo-products';
+
+const defaultCategories = [
+  { id: 'tv', name: { es: 'Televisores', en: 'TVs', ru: 'Телевизоры' } },
+  { id: 'coffee', name: { es: 'Café', en: 'Coffee', ru: 'Кофе' } },
+  { id: 'cleaning', name: { es: 'Limpieza', en: 'Cleaning', ru: 'Уборка' } },
+  { id: 'kitchen', name: { es: 'Cocina', en: 'Kitchen', ru: 'Кухня' } },
+  { id: 'large', name: { es: 'Gran electrodoméstico', en: 'Large appliances', ru: 'Крупная техника' } }
+];
 
 const defaultProducts = [
   {
-    id: 'samsung-qled-55', brand: 'Samsung', category: 'tv', price: 449.5, oldPrice: 899, stock: 2, emoji: '📺',
+    id: 'samsung-qled-55', brand: 'Samsung', category: 'tv', price: 449.5, oldPrice: 899, stock: 2,
     image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=900&q=82',
     title: { es: 'Televisor Samsung QLED 55”', en: 'Samsung QLED 55” TV', ru: 'Телевизор Samsung QLED 55”' },
-    description: { es: 'Televisor 4K de exposición, revisado y listo para disfrutar.', en: 'Inspected 4K display model, ready to enjoy.', ru: 'Проверенный выставочный телевизор 4K, готовый к использованию.' },
-    condition: { es: 'Exposición', en: 'Display model', ru: 'Витринный' }
+    description: { es: 'Televisor 4K de exposición, revisado y listo para disfrutar.', en: 'Inspected 4K display model, ready to enjoy.', ru: 'Проверенный выставочный телевизор 4K, готовый к использованию.' }
   },
   {
-    id: 'delonghi-magnifica', brand: 'De’Longhi', category: 'coffee', price: 249.5, oldPrice: 499, stock: 3, emoji: '☕',
+    id: 'delonghi-magnifica', brand: 'De’Longhi', category: 'coffee', price: 249.5, oldPrice: 499, stock: 3,
     image: 'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?auto=format&fit=crop&w=900&q=82',
     title: { es: 'Cafetera Magnifica Start', en: 'Magnifica Start coffee machine', ru: 'Кофемашина Magnifica Start' },
-    description: { es: 'Café recién molido con controles sencillos y vaporizador manual.', en: 'Freshly ground coffee with simple controls and a manual frother.', ru: 'Свежемолотый кофе, простое управление и ручной капучинатор.' },
-    condition: { es: 'Nuevo', en: 'New', ru: 'Новый' }
+    description: { es: 'Café recién molido con controles sencillos y vaporizador manual.', en: 'Freshly ground coffee with simple controls and a manual frother.', ru: 'Свежемолотый кофе, простое управление и ручной капучинатор.' }
   },
   {
-    id: 'bosch-unlimited-7', brand: 'Bosch', category: 'cleaning', price: 224.5, oldPrice: 449, stock: 4, emoji: '🧹',
+    id: 'bosch-unlimited-7', brand: 'Bosch', category: 'cleaning', price: 224.5, oldPrice: 449, stock: 4,
     image: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=900&q=82',
     title: { es: 'Aspirador Bosch Unlimited 7', en: 'Bosch Unlimited 7 vacuum', ru: 'Пылесос Bosch Unlimited 7' },
-    description: { es: 'Aspirador sin cable, flexible y potente para la limpieza diaria.', en: 'Flexible and powerful cordless vacuum for daily cleaning.', ru: 'Гибкий и мощный беспроводной пылесос для ежедневной уборки.' },
-    condition: { es: 'Caja abierta', en: 'Open box', ru: 'Открытая упаковка' }
+    description: { es: 'Aspirador sin cable, flexible y potente para la limpieza diaria.', en: 'Flexible and powerful cordless vacuum for daily cleaning.', ru: 'Гибкий и мощный беспроводной пылесос для ежедневной уборки.' }
   },
   {
-    id: 'cecotec-dual', brand: 'Cecotec', category: 'kitchen', price: 74.5, oldPrice: 149, stock: 5, emoji: '🍟',
+    id: 'cecotec-dual', brand: 'Cecotec', category: 'kitchen', price: 74.5, oldPrice: 149, stock: 5,
     image: 'https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=900&q=82',
     title: { es: 'Freidora de aire Cecofry Dual', en: 'Cecofry Dual air fryer', ru: 'Аэрогриль Cecofry Dual' },
-    description: { es: 'Dos cubetas independientes para preparar platos distintos a la vez.', en: 'Two independent baskets to cook different dishes at once.', ru: 'Две независимые чаши для одновременного приготовления разных блюд.' },
-    condition: { es: 'Nuevo', en: 'New', ru: 'Новый' }
+    description: { es: 'Dos cubetas independientes para preparar platos distintos a la vez.', en: 'Two independent baskets to cook different dishes at once.', ru: 'Две независимые чаши для одновременного приготовления разных блюд.' }
   },
   {
-    id: 'lg-washer', brand: 'LG', category: 'large', price: 299.5, oldPrice: 599, stock: 2, emoji: '🫧',
+    id: 'lg-washer', brand: 'LG', category: 'large', price: 299.5, oldPrice: 599, stock: 2,
     image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=900&q=82',
     title: { es: 'Lavadora LG 8 kg AI DD', en: 'LG 8 kg AI DD washer', ru: 'Стиральная машина LG 8 кг AI DD' },
-    description: { es: 'Lavado inteligente de bajo consumo con capacidad para toda la familia.', en: 'Energy-efficient smart washing with room for the whole family.', ru: 'Экономичная умная стирка и загрузка для всей семьи.' },
-    condition: { es: 'Exposición', en: 'Display model', ru: 'Витринный' }
+    description: { es: 'Lavado inteligente de bajo consumo con capacidad para toda la familia.', en: 'Energy-efficient smart washing with room for the whole family.', ru: 'Экономичная умная стирка и загрузка для всей семьи.' }
   },
   {
-    id: 'philips-lattego', brand: 'Philips', category: 'coffee', price: 274.5, oldPrice: 549, stock: 1, emoji: '🥛',
+    id: 'philips-lattego', brand: 'Philips', category: 'coffee', price: 274.5, oldPrice: 549, stock: 1,
     image: 'https://images.unsplash.com/photo-1579992357154-faf4bde95b3d?auto=format&fit=crop&w=900&q=82',
     title: { es: 'Philips LatteGo Serie 3200', en: 'Philips LatteGo Series 3200', ru: 'Кофемашина Philips LatteGo 3200' },
-    description: { es: 'Café y espuma de leche suave con un sistema fácil de limpiar.', en: 'Coffee and silky milk foam with an easy-clean system.', ru: 'Кофе и нежная молочная пенка, система легко очищается.' },
-    condition: { es: 'Caja abierta', en: 'Open box', ru: 'Открытая упаковка' }
+    description: { es: 'Café y espuma de leche suave con un sistema fácil de limpiar.', en: 'Coffee and silky milk foam with an easy-clean system.', ru: 'Кофе и нежная молочная пенка, система легко очищается.' }
   }
 ];
 
-const savedProducts = JSON.parse(localStorage.getItem('isgroup-demo-products') || 'null');
+const savedProducts = JSON.parse(localStorage.getItem(PRODUCT_STORAGE_KEY) || 'null');
 let products = Array.isArray(savedProducts)
   ? savedProducts
   : defaultProducts.map((product) => ({ ...product, status: product.id === 'philips-lattego' ? 'draft' : 'published' }));
+
+function readStoredCategories() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(CATEGORY_STORAGE_KEY) || 'null');
+    return Array.isArray(stored) && stored.length ? stored : defaultCategories;
+  } catch {
+    return defaultCategories;
+  }
+}
+
+let categories = readStoredCategories();
 
 const translations = {
   es: {
@@ -116,7 +131,10 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const t = (key) => translations[state.lang][key] || translations.es[key] || key;
 const money = (value) => new Intl.NumberFormat(state.lang === 'ru' ? 'ru-RU' : state.lang === 'en' ? 'en-IE' : 'es-ES', { style: 'currency', currency: 'EUR' }).format(value);
-const categoryName = (category) => t(category);
+const categoryName = (categoryId) => {
+  const category = categories.find((item) => item.id === categoryId);
+  return category?.name?.[state.lang] || category?.name?.es || t(categoryId);
+};
 
 function setLanguage(lang) {
   state.lang = lang;
@@ -134,7 +152,7 @@ function populateSelects() {
   const currentCategory = $('#categoryFilter').value || 'all';
   const currentBrand = $('#brandFilter').value || 'all';
   const currentSort = $('#sortFilter').value || 'featured';
-  $('#categoryFilter').innerHTML = ['all', 'tv', 'coffee', 'cleaning', 'kitchen', 'large'].map((item) => `<option value="${item}">${item === 'all' ? t('allCategories') : t(item)}</option>`).join('');
+  $('#categoryFilter').innerHTML = `<option value="all">${t('allCategories')}</option>${categories.map((category) => `<option value="${category.id}">${categoryName(category.id)}</option>`).join('')}`;
   $('#brandFilter').innerHTML = `<option value="all">${t('allBrands')}</option>${[...new Set(products.map((product) => product.brand))].sort().map((brand) => `<option value="${brand}">${brand}</option>`).join('')}`;
   $('#sortFilter').innerHTML = ['featured', 'priceAsc', 'priceDesc', 'discount'].map((item) => `<option value="${item}">${t(item)}</option>`).join('');
   $('#deliverySelect').innerHTML = ['pickup', 'spain', 'local', 'eu'].map((item) => `<option value="${item}">${t(item)}</option>`).join('');
@@ -160,7 +178,8 @@ function filteredProducts() {
 }
 
 function productImage(product, className = '') {
-  return `<span class="product-emoji" aria-hidden="true">${product.emoji}</span><img class="${className}" src="${product.image}" alt="${product.title[state.lang]}" loading="lazy" onerror="this.remove()">`;
+  const image = String(product.image || '').trim();
+  return `<span class="product-photo-placeholder" aria-hidden="true">FOTO</span>${image ? `<img class="${className}" src="${image}" alt="${product.title[state.lang]}" loading="lazy" onerror="this.remove()">` : ''}`;
 }
 
 function renderProducts() {
@@ -301,7 +320,7 @@ function openProduct(id) {
   const discount = Math.round((1 - product.price / product.oldPrice) * 100);
   $('#productModalContent').innerHTML = `<div class="modal-product"><div class="modal-product-media">${productImage(product)}<span class="product-badge">−${discount}%</span></div>
     <div class="modal-product-copy"><p class="eyebrow orange">${product.brand} · ${categoryName(product.category)}</p><h2>${product.title[state.lang]}</h2><p class="modal-description">${product.description[state.lang]}</p>
-    <div class="modal-specs"><span><b>${t('condition')}</b><strong>${product.condition[state.lang]}</strong></span><span><b>${t('stock')}</b><strong>${product.stock} ${t('units')}</strong></span><span><b>${t('category')}</b><strong>${categoryName(product.category)}</strong></span><span><b>${t('warranty')}</b><strong>${t('warrantyValue')}</strong></span></div>
+    <div class="modal-specs"><span><b>${t('stock')}</b><strong>${product.stock} ${t('units')}</strong></span><span><b>${t('category')}</b><strong>${categoryName(product.category)}</strong></span><span><b>${t('warranty')}</b><strong>${t('warrantyValue')}</strong></span></div>
     <div class="modal-price"><strong>${money(product.price)}</strong><del>${money(product.oldPrice)}</del></div><button class="button button-yellow full" type="button" data-add="${product.id}">${t('addToCart')}</button></div></div>`;
   $('#productModal').showModal();
 }
@@ -348,5 +367,21 @@ $('#checkoutForm').addEventListener('submit', (event) => {
 });
 $('#menuTrigger').addEventListener('click', () => { const open = $('#mobileNav').classList.toggle('open'); $('#menuTrigger').setAttribute('aria-expanded', String(open)); });
 $$('#mobileNav a').forEach((link) => link.addEventListener('click', () => { $('#mobileNav').classList.remove('open'); $('#menuTrigger').setAttribute('aria-expanded', 'false'); }));
+window.addEventListener('storage', (event) => {
+  if (event.key === CATEGORY_STORAGE_KEY) categories = readStoredCategories();
+  if (event.key === PRODUCT_STORAGE_KEY) {
+    try {
+      const stored = JSON.parse(localStorage.getItem(PRODUCT_STORAGE_KEY) || 'null');
+      products = Array.isArray(stored) ? stored : defaultProducts.map((product) => ({ ...product, status: product.id === 'philips-lattego' ? 'draft' : 'published' }));
+    } catch {
+      products = defaultProducts.map((product) => ({ ...product, status: 'published' }));
+    }
+  }
+  if ([CATEGORY_STORAGE_KEY, PRODUCT_STORAGE_KEY].includes(event.key)) {
+    populateSelects();
+    renderProducts();
+    renderCart();
+  }
+});
 $('#year').textContent = new Date().getFullYear();
 setLanguage(state.lang);
